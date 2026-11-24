@@ -154,11 +154,16 @@ button:active,.st:active{transform:scale(.97);transition-duration:.15s}
 @keyframes lpin{from{opacity:0;transform:translateY(8px)}}
 .d{position:relative}
 /* Shaxta: smena vaqtiga qarab rang — tun to'q, kechki o'rta, kunduzgi yorqin */
-.d.w.s0,.leg .k0{background:color-mix(in srgb,var(--acc) 55%,#04140a)}
-.d.w.s16,.leg .k16{background:color-mix(in srgb,var(--acc) 78%,#04140a)}
-.d.w.s8,.leg .k8{background:var(--acc)}
-[data-theme=violet] .d.w.s0,[data-theme=violet] .leg .k0{background:linear-gradient(160deg,#4c2a9e,#2e1470)}
-[data-theme=violet] .d.w.s16,[data-theme=violet] .leg .k16{background:linear-gradient(160deg,#6d45d6,#4a22a8)}
+/* Shaxta smenalari: 1 — ko'k (00:00), 2 — yashil (08:00), 3 — to'q sariq (16:00) */
+.d.w.s0,.leg .k0{background:#2563eb;border-color:#2563eb}
+.d.w.s8,.leg .k8{background:#16a34a;border-color:#16a34a}
+.d.w.s16,.leg .k16{background:#ea7a0c;border-color:#ea7a0c}
+[data-theme=violet] .d.w.s0{background:linear-gradient(160deg,#3b82f6,#1d4ed8)}
+[data-theme=violet] .d.w.s8{background:linear-gradient(160deg,#22c55e,#15803d)}
+[data-theme=violet] .d.w.s16{background:linear-gradient(160deg,#fb923c,#ea580c)}
+.sn{align-self:flex-end;min-width:20px;height:20px;padding:0 5px;border-radius:7px;background:rgba(255,255,255,.25);color:#fff;font-size:13px;font-weight:800;line-height:20px;text-align:center}
+@media(max-width:600px){.sn{min-width:17px;height:17px;line-height:17px;font-size:12px;padding:0 4px;border-radius:6px}}
+#leg2 .k0,#leg2 .k8,#leg2 .k16{width:auto;height:auto;min-width:18px;padding:1px 5px;border-radius:5px;color:#fff;font-style:normal;font-weight:800;font-size:12px;text-align:center}
 @keyframes pulse{to{transform:translateY(-4px)}}
 @media(prefers-reduced-motion:reduce){.alarm.on{animation:none}}
 @media(max-width:820px){.top{grid-template-columns:minmax(0,1fr)}}
@@ -182,7 +187,7 @@ button:active,.st:active{transform:scale(.97);transition-duration:.15s}
       </div>
       <div class="grid7" id="cal"></div>
       <div class="leg"><span><i style="background:var(--acc)"></i><span data-i18n="lg_work">Ish kuni</span></span><span><i style="background:var(--soft);border:1px solid var(--line)"></i><span data-i18n="lg_off">Dam olish</span></span><span><i style="background:var(--red2);border:1px solid var(--red)"></i><span data-i18n="lg_hol">Bayram</span></span><span><i style="outline:2px solid var(--red)"></i><span data-i18n="lg_today">Bugun</span></span></div>
-      <div class="leg" id="leg2" hidden><span><i class="k0"></i>00:00–07:12</span><span><i class="k16"></i>16:00–23:12</span><span><i class="k8"></i>08:00–15:12</span><span><i style="background:var(--soft);border:1px solid var(--line)"></i><span data-i18n="lg_off">Dam olish</span></span></div>
+      <div class="leg" id="leg2" hidden><span><i class="k0">1</i>00:00–07:12</span><span><i class="k8">2</i>08:00–15:12</span><span><i class="k16">3</i>16:00–23:12</span><span><i style="background:var(--soft);border:1px solid var(--line)"></i><span data-i18n="lg_off">Dam olish</span></span></div>
     </section>
   </div>
 </div></div>
@@ -388,7 +393,7 @@ function render(){
   const first=(new Date(y,mo,1).getDay()+6)%7,dim=new Date(y,mo+1,0).getDate();
   let h=L().wd.map(x=>`<div class="dow">${x}</div>`).join('')+'<div class="d e"></div>'.repeat(first);
   for(let i=1;i<=dim;i++){const d=new Date(y,mo,i),wi=info(c,d),hh=holName(c,d),isT=+d===+td,sc=c.mine&&wi?' s'+Math.floor(wi.s/60):'';
-    h+=`<div class="d${wi?' w':''}${sc}${hh?' h':''}${isT?' t':''}" title="${hh?esc(hh):(wi?span(wi):'')}">${i}<small>${wi?sStr(wi):(hh?esc(hh):'')}</small></div>`}
+    h+=`<div class="d${wi?' w':''}${sc}${hh?' h':''}${isT?' t':''}" title="${hh?esc(hh):(wi?span(wi):'')}">${i}${c.mine&&wi?`<b class="sn">${wi.k}</b>`:`<small>${wi?sStr(wi):(hh?esc(hh):'')}</small>`}</div>`}
   $('cal').innerHTML=h;
 
   // Yillik hisob
