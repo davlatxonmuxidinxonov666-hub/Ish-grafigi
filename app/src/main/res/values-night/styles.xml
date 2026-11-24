@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Telefon qorong'i rejimda bo'lsa: ilova ham qorong'i (WebView prefers-color-scheme: dark oladi) -->
+    <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">#16A34A</item>
+        <item name="android:colorPrimaryDark">#15803D</item>
+        <item name="android:colorAccent">#DC2626</item>
+        <item name="android:statusBarColor">#15803D</item>
+        <item name="android:navigationBarColor">#0E1411</item>
+        <item name="android:windowBackground">@color/night_bg</item>
+    </style>
+</resources>

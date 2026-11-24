@@ -198,6 +198,13 @@ button:active,.st:active{transform:scale(.95);transition-duration:.1s}
     <label>Tushlik tanaffusi (daqiqa)<input id="brk" type="number" min="0" max="240" step="5" value="60"></label>
     <label>Budilnik: ishdan necha daqiqa oldin<input id="pre" type="number" min="0" max="600" step="5" value="90"></label>
     <label>Hisob yili<input id="year" type="number" min="2000" max="2100"></label>
+    <label>Ko'rinish (mavzu)
+      <select id="theme">
+        <option value="auto">Avtomatik — telefon bo'yicha</option>
+        <option value="dark">Qorong'i</option>
+        <option value="light">Yorug'</option>
+      </select>
+    </label>
     <label class="chk"><input id="hol" type="checkbox" checked>O'zbekiston bayramlarida dam</label>
     <label style="grid-column:1/-1">Qo'shimcha dam kunlari (masalan Hayit, otpusk): KK.OO formatda, vergul bilan
       <input id="extra" type="text" placeholder="20.03, 21.03, 27.05">
@@ -230,6 +237,11 @@ const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+Stri
 const day0=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
 $('start').value=iso(now);$('year').value=now.getFullYear();
 try{const s=JSON.parse(localStorage.getItem('ishgrafik')||'{}');KEYS.forEach(k=>{if(s[k]!==undefined){if(k==='hol')$(k).checked=s[k];else $(k).value=s[k]}})}catch(e){}
+// Mavzu: avtomatik (telefon), qorong'i yoki yorug'
+let themeSet=false;
+function applyTheme(v){const r=document.documentElement;if(v==='dark'||v==='light'){r.dataset.theme=v;themeSet=true}else if(themeSet){delete r.dataset.theme;themeSet=false}}
+try{const t=localStorage.getItem('ishgrafik_theme')||'auto';$('theme').value=t;applyTheme(t)}catch(e){}
+$('theme').addEventListener('change',e=>{applyTheme(e.target.value);try{localStorage.setItem('ishgrafik_theme',e.target.value)}catch(_){}});
 let view=new Date(now.getFullYear(),now.getMonth(),1);let barsOn=false;
 
 function cfg(){

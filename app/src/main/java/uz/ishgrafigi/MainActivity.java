@@ -25,6 +25,7 @@ public class MainActivity extends Activity {
         getWindow().setStatusBarColor(0xFF15803D);
 
         web = new WebView(this);
+        web.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
