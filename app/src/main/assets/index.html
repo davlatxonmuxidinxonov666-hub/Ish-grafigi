@@ -110,8 +110,7 @@ button:active,.st:active{transform:scale(.95);transition-duration:.1s}
 .tabs button[aria-selected=true] svg{transform:translateY(-1px) scale(1.12)}
 .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:22px;background:var(--acc2);transform:translateX(calc(var(--p,0)*100%));transition:background-color .35s;z-index:0;will-change:transform}
 .ind.r{background:var(--red2)}
-.rv{opacity:0;transform:translateY(22px) scale(.97);filter:blur(8px)}
-.page.in .rv{opacity:1;transform:none;filter:none;transition:opacity .7s var(--out),transform .9s var(--spring),filter .7s var(--out);transition-delay:calc(var(--i,0)*70ms)}
+.ind.anim{transition:transform .55s var(--spring),background-color .35s}
 .live{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--acc);margin-right:8px;vertical-align:1px;animation:ping 2.2s var(--out) infinite}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(22,163,74,.55)}70%,100%{box-shadow:0 0 0 11px rgba(22,163,74,0)}}
 .bar{transition:width 1.1s var(--spring)}
@@ -353,19 +352,27 @@ KEYS.forEach(k=>$(k).addEventListener(k==='hol'||k==='type'?'change':'input',ren
 // Sahifalar: pastki tugmalar va yonga surish
 const pg=$('pages'),tabs=[...document.querySelectorAll('#tabs button')],ids=['grafik','hisob','budilnik','sozlamalar'];let cur=0;
 const pgs=[...document.querySelectorAll('.page')],ind=$('ind');
-function enter(i){const p=pgs[i];if(!p||p.classList.contains('in'))return;p.classList.add('in');if(i===1){barsOn=true;growBars();countUp()}}
-function setTab(i){if(i!==cur){try{APP&&navigator.vibrate&&navigator.vibrate(8)}catch(e){}}cur=i;tabs.forEach((b,j)=>b.setAttribute('aria-selected',j===i?'true':'false'));ind.classList.toggle('r',i===2);enter(i)}
+// Har safar bo'limga kirganda: tugma bosilsa — to'liq paydo bo'lish, surilsa — yengil ko'tarilish
+function play(i,full){const p=pgs[i];if(!p)return;
+  if(i===1){barsOn=true;document.querySelectorAll('.bar').forEach(b=>b.style.width='0');growBars();countUp()}
+  if(RM.matches||!p.animate)return;
+  p.querySelectorAll('.rv').forEach((el,k)=>{el.getAnimations().forEach(a=>a.cancel());
+    el.animate(full?[{opacity:0,transform:'translateY(26px) scale(.97)',filter:'blur(8px)'},{opacity:1,transform:'none',filter:'blur(0)'}]
+                   :[{opacity:.35,transform:'translateY(18px)'},{opacity:1,transform:'none'}],
+      {duration:full?780:620,delay:Math.min(k,8)*65,easing:'cubic-bezier(.32,.72,0,1)',fill:'backwards'})})}
+function setTab(i,full){if(i===cur&&!full)return;if(i!==cur&&cur>=0){try{APP&&navigator.vibrate&&navigator.vibrate(8)}catch(e){}}cur=i;tabs.forEach((b,j)=>b.setAttribute('aria-selected',j===i?'true':'false'));ind.classList.toggle('r',i===2);play(i,!!full)}
 function growBars(){requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll('.bar').forEach(b=>b.style.width=b.dataset.w)))}
 function countUp(){if(RM.matches)return;document.querySelectorAll('.st b').forEach(b=>{const tn=b.firstChild;if(!tn||tn.nodeType!==3)return;const fin=tn.textContent,num=+b.dataset.v;if(!isFinite(num)||num===0)return;
   const t0=performance.now(),D=950;const step=t=>{const q=Math.min(1,(t-t0)/D),e=1-Math.pow(1-q,4);tn.textContent=q<1?fmtH(num*e):fin;if(q<1)requestAnimationFrame(step)};requestAnimationFrame(step)})}
-function go(i,smooth=true){pg.scrollTo({left:i*pg.clientWidth,behavior:smooth&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'auto'});setTab(i);try{history.replaceState(null,'','#'+ids[i])}catch(e){}}
+function go(i,smooth=false){ind.classList.add('anim');pg.scrollTo({left:i*pg.clientWidth,behavior:smooth&&!RM.matches?'smooth':'auto'});ind.style.setProperty('--p',i);setTab(i,true);try{history.replaceState(null,'','#'+ids[i])}catch(e){}}
 tabs.forEach((b,i)=>b.addEventListener('click',()=>go(i)));
+pg.addEventListener('touchstart',()=>ind.classList.remove('anim'),{passive:true});
 let st=null;pg.addEventListener('scroll',()=>{ind.style.setProperty('--p',(pg.scrollLeft/Math.max(1,pg.clientWidth)).toFixed(4));const i=Math.round(pg.scrollLeft/Math.max(1,pg.clientWidth));if(i!==cur)setTab(i);clearTimeout(st);st=setTimeout(()=>{try{history.replaceState(null,'','#'+ids[cur])}catch(e){}},200)},{passive:true});
 const pro=new ResizeObserver(()=>{pg.scrollTo({left:cur*pg.clientWidth});ind.style.setProperty('--p',cur)});pro.observe(pg);
 render();
 pgs.forEach(p=>{const seen=new Set();let n=0;p.querySelectorAll('h1,.sub,.top>.pan,.swipe,.stats,h2,.scroll,.wrap>.pan,.wrap.pan').forEach(el=>{if(seen.has(el))return;seen.add(el);el.classList.add('rv');el.style.setProperty('--i',n++)})});
 const h0=ids.indexOf(location.hash.slice(1));
-requestAnimationFrame(()=>requestAnimationFrame(()=>{if(h0>0)go(h0,false);else enter(0)}));
+requestAnimationFrame(()=>requestAnimationFrame(()=>{if(h0>0)go(h0);else{cur=-1;setTab(0,true)}}));
 }
 </script>
 </body>
