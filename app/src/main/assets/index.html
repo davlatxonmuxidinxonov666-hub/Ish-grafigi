@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ish grafigi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: aniq, ishchan — smena grafigi ofisi
+   IDEA: devorga ilingan bosma smena taqvimi, bugungi kun kartochkasi bilan
+   PICTURE: bugungi kun paneli + oylik taqvim (ish kunlari yashil)
+   COLOUR and TYPE: toza oq fon, yorqin yashil #16a34a asosiy, qizil #dc2626 urg'u (bayram, budilnik, bugun); Schibsted Grotesk
+   LAYOUT: tepada bugun + taqvim, ostida sozlamalar, keyin oylik/yillik hisob */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0e1411);--ink:light-dark(#13261b,#eef5f0);--mut:light-dark(#5d6e64,#a3b6aa);--pan:light-dark(#fff,#162019);--soft:light-dark(#f6faf7,#1b2820);--line:light-dark(#e2ebe5,#2a3a31);--acc:#16a34a;--acc-t:light-dark(#15803d,#4ade80);--acc2:light-dark(#e9f8ef,#15331f);--red:light-dark(#dc2626,#f87171);--red2:light-dark(#fdeeee,#3a1818);--hol:var(--red)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Schibsted Grotesk",system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(20px,3.5vw,48px) max(4vw,14px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1{font-size:clamp(30px,4.6vw,46px);line-height:1.05;margin:0 0 6px;font-weight:800;text-wrap:balance}
+h2{font-size:22px;margin:0 0 14px;font-weight:700}
+.sub{color:var(--mut);margin:0 0 22px;max-width:62ch}
+.top{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:18px}
+.pan{background:var(--pan);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 30px rgba(18,52,32,.08)}
+.hero{background:linear-gradient(135deg,#16a34a 0%,#15803d 70%,#166534 100%);color:#fff;border-bottom:5px solid #dc2626;padding-bottom:clamp(28px,4vw,56px)}
+.hero h1{color:#fff}.hero .sub{color:rgba(255,255,255,.9)}
+.hero .pan{box-shadow:0 14px 40px rgba(0,40,15,.25);border:0;color:var(--ink)}
+.today{display:flex;flex-direction:column;gap:14px}
+.today .big{color:var(--red)}.today.work .big{color:var(--acc-t)}
+.today .lab{color:var(--mut);opacity:1}
+.today .lab{font-size:14px;opacity:.85}
+.today .big{font-size:clamp(34px,5vw,50px);font-weight:800;line-height:1.02}
+.today .hrs{font-size:26px;font-weight:700;white-space:nowrap}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pill{background:var(--acc2);color:var(--acc-t);font-weight:600;border-radius:99px;padding:6px 12px;font-size:14px;white-space:nowrap}
+.calh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.calh b{font-size:22px}
+.grid7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.dow{font-size:13px;color:var(--mut);text-align:center;padding:2px 0}
+.d{aspect-ratio:1/0.82;border-radius:10px;border:1px solid var(--line);background:var(--soft);padding:5px 6px;font-size:15px;font-weight:600;display:flex;flex-direction:column;justify-content:space-between}
+.d small{font-size:11px;font-weight:500;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d.w{background:var(--acc);border-color:var(--acc);color:#fff}
+.d.h{border-color:var(--red);background:var(--red2);color:var(--red)}
+.d.t{outline:3px solid var(--red);outline-offset:2px}
+.d.e{border:0;background:none}
+.leg{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--mut);margin-top:10px}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+button,select,input{font:inherit;font-size:16px;color:var(--ink)}
+button{min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--pan);cursor:pointer;font-weight:600}
+button.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.nav{min-width:44px;padding:0}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px 16px}
+label{display:flex;flex-direction:column;gap:5px;font-size:14px;color:var(--mut);font-weight:500}
+select,input{min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--pan);padding:0 10px}
+.chk{flex-direction:row;align-items:center;gap:10px;color:var(--ink)}
+.chk input{width:22px;height:22px;min-height:0}
+.hint{font-size:13px;color:var(--mut);margin:6px 0 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.st{background:var(--pan);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:0 4px 16px rgba(18,52,32,.06)}
+.st span{display:block;font-size:13px;color:var(--mut)}
+.st b{font-size:clamp(26px,3.6vw,36px);font-weight:800;line-height:1.1;white-space:nowrap}
+.st b em{font-style:normal;font-size:15px;font-weight:600;color:var(--mut);margin-left:4px}
+table{width:100%;border-collapse:collapse;background:var(--pan);border-radius:12px;overflow:hidden}
+th,td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:13px;color:var(--mut);font-weight:600}
+tr.cur td{background:var(--acc2);font-weight:700}
+.bar{height:8px;border-radius:4px;background:var(--acc);display:inline-block;vertical-align:middle}
+tfoot td{font-weight:800;border-bottom:0}
+.alarm{display:none;position:fixed;inset:auto 12px 82px 12px;max-width:520px;margin:0 auto;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border-radius:16px;padding:18px;z-index:9;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.alarm.on{display:block;animation:pulse 1s ease-in-out infinite alternate}
+.alarm b{font-size:24px;display:block}
+.alarm button{background:#fff;color:#b91c1c;border:0;margin-top:10px}
+.pill.r{background:var(--red2);color:var(--red)}
+.st b{color:var(--acc-t)}.st:nth-child(4) b{color:var(--red)}
+html,body{height:100%}
+body{display:flex;flex-direction:column;height:100dvh}
+.pages{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.pages::-webkit-scrollbar{display:none}
+.page{flex:0 0 100%;width:100%;height:100%;overflow-y:auto;scroll-snap-align:start;scroll-snap-stop:always;overscroll-behavior-y:contain}
+.hero-page{background:linear-gradient(135deg,#16a34a 0%,#15803d 70%,#166534 100%)}
+.hero-page .hero{background:none;border-bottom:0}
+.swipe{color:rgba(255,255,255,.85);text-align:center;font-size:14px;margin:0 0 24px}
+.ph{color:var(--acc-t);font-size:clamp(28px,4vw,40px);margin-bottom:18px}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--pan);border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(18,52,32,.08);padding-bottom:env(safe-area-inset-bottom);flex:none}
+.tabs button{border:0;border-radius:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:64px;padding:6px 2px;font-size:12.5px;font-weight:600;color:var(--mut)}
+.tabs svg{width:24px;height:24px;padding:4px 16px;box-sizing:content-box;border-radius:99px;transition:background .2s}
+.tabs button[aria-selected=true]{color:var(--acc-t)}
+.tabs button[aria-selected=true] svg{background:var(--acc2)}
+.tabs button[data-i="2"][aria-selected=true]{color:var(--red)}
+.tabs button[data-i="2"][aria-selected=true] svg{background:var(--red2)}
+@media(prefers-reduced-motion:reduce){.tabs svg{transition:none}}
+@keyframes pulse{to{transform:translateY(-4px)}}
+@media(prefers-reduced-motion:reduce){.alarm.on{animation:none}}
+@media(max-width:820px){.top{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){table{font-size:13px}th,td{padding:8px}.d{font-size:13px;padding:3px 4px}.d small{display:none}.barc{display:none}}
+</style>
+</head>
+<body>
+<main class="pages" id="pages">
+<section class="page hero-page" id="grafik" aria-label="Grafik">
+<div class="band hero"><div class="wrap">
+  <h1>Ish grafigi va budilnik</h1>
+  <p class="sub">Grafikni «Sozlamalar» bo'limida o'zgartiring.</p>
+
+  <div class="top">
+    <section class="pan today" id="today" aria-live="polite"></section>
+    <section class="pan">
+      <div class="calh">
+        <button class="nav" id="prev" aria-label="Oldingi oy">‹</button>
+        <b id="mname"></b>
+        <button class="nav" id="next" aria-label="Keyingi oy">›</button>
+      </div>
+      <div class="grid7" id="cal"></div>
+      <div class="leg"><span><i style="background:var(--acc)"></i>Ish kuni</span><span><i style="background:var(--soft);border:1px solid var(--line)"></i>Dam olish</span><span><i style="background:var(--red2);border:1px solid var(--red)"></i>Bayram</span><span><i style="outline:2px solid var(--red)"></i>Bugun</span></div>
+    </section>
+  </div>
+</div></div>
+<p class="swipe">Yonga suring — hisob, budilnik va sozlamalar ›</p>
+</section>
+
+<section class="page" id="hisob" aria-label="Hisob"><div class="band"><div class="wrap">
+  <h1 class="ph">Hisob</h1>
+  <h2 id="statH"></h2>
+  <div class="stats" id="stats"></div>
+  <h2>Oylar bo'yicha</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Oy</th><th>Ish kunlari</th><th>Dam kunlari</th><th>Ish soatlari</th><th class="barc"></th></tr></thead>
+    <tbody id="tb"></tbody><tfoot id="tf"></tfoot>
+  </table></div>
+</div></div></section>
+
+<section class="page" id="budilnik" aria-label="Budilnik"><div class="band"><div class="wrap">
+  <h1 class="ph">Budilnik</h1>
+  <div class="pan">
+  <div class="row" style="margin-top:14px">
+    <button class="pri" id="almBtn">Budilnikni yoqish</button>
+    <button id="test">Ovozni sinash</button>
+    <span class="hint" id="almState" style="margin:0"></span>
+  </div>
+  <p class="hint" id="almHint">Sahifa ochiq turganda budilnik ovoz va xabar bilan chaladi. Telefon yopiq bo'lsa ham chalishi uchun telefonning o'z budilnigiga qo'ying — pastda har bir ish kuni uchun vaqt ko'rsatilgan.</p>
+  </div>
+  <h2 style="margin-top:24px">Yaqin 7 ish kuni</h2>
+  <div class="scroll"><table><thead><tr><th>Sana</th><th>Ish vaqti</th><th>Budilnik</th></tr></thead><tbody id="up"></tbody></table></div>
+
+</div></div></section>
+
+<section class="page" id="sozlamalar" aria-label="Sozlamalar"><div class="band"><div class="wrap pan">
+  <h1 class="ph">Sozlamalar</h1>
+  <div class="form">
+    <label>Grafik turi
+      <select id="type">
+        <option value="w5">5/2 — dushanba–juma</option>
+        <option value="w6">6/1 — dushanba–shanba</option>
+        <option value="c2-2">2/2 — 2 kun ish, 2 kun dam</option>
+        <option value="c3-3">3/3 — 3 kun ish, 3 kun dam</option>
+        <option value="c4-4">4/4 — 4 kun ish, 4 kun dam</option>
+        <option value="c1-2">1/2 — sutka, 2 kun dam</option>
+        <option value="c1-3">1/3 — sutka, 3 kun dam</option>
+        <option value="custom">O'zim kiritaman (N/M)</option>
+      </select>
+    </label>
+    <label id="cN">Ish kunlari (N)<input id="n" type="number" min="1" max="30" value="2"></label>
+    <label id="cM">Dam kunlari (M)<input id="m" type="number" min="1" max="30" value="2"></label>
+    <label id="cS">Navbatdagi birinchi ish kuni<input id="start" type="date"></label>
+    <label>Ish boshlanishi<input id="from" type="time" value="08:00"></label>
+    <label>Ish tugashi<input id="to" type="time" value="17:00"></label>
+    <label>Tushlik tanaffusi (daqiqa)<input id="brk" type="number" min="0" max="240" step="5" value="60"></label>
+    <label>Budilnik: ishdan necha daqiqa oldin<input id="pre" type="number" min="0" max="600" step="5" value="90"></label>
+    <label>Hisob yili<input id="year" type="number" min="2000" max="2100"></label>
+    <label class="chk"><input id="hol" type="checkbox" checked>O'zbekiston bayramlarida dam</label>
+    <label style="grid-column:1/-1">Qo'shimcha dam kunlari (masalan Hayit, otpusk): KK.OO formatda, vergul bilan
+      <input id="extra" type="text" placeholder="20.03, 21.03, 27.05">
+    </label>
+  </div>
+  <p class="hint" id="nh">Tugash vaqti boshlanishdan erta bo'lsa (masalan 20:00–08:00), smena ertasi kunga o'tadi deb hisoblanadi. Sutka uchun 08:00–08:00 kiriting.</p>
+</div></div></section>
+</main>
+
+<nav class="tabs" id="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-i="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M7.5 13.5h3v3h-3z" fill="currentColor"/></svg><span>Grafik</span></button>
+  <button role="tab" aria-selected="false" data-i="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V4"/></svg><span>Hisob</span></button>
+  <button role="tab" aria-selected="false" data-i="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M4 4.5 6.5 2.5M20 4.5 17.5 2.5"/></svg><span>Budilnik</span></button>
+  <button role="tab" aria-selected="false" data-i="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.3"/><circle cx="10" cy="17" r="2.3"/></svg><span>Sozlamalar</span></button>
+</nav>
+
+<div class="alarm" id="alarm" role="alertdialog" aria-live="assertive"><b id="almT">Turish vaqti!</b><span id="almX"></span><br><button id="stop">To'xtatish</button></div>
+
+<script>
+{
+const $=id=>document.getElementById(id);
+const OY=['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
+const HAF=['Du','Se','Ch','Pa','Ju','Sh','Ya'];
+const HAFT=['yakshanba','dushanba','seshanba','chorshanba','payshanba','juma','shanba'];
+const FIX={'1.1':'Yangi yil','8.3':'Xotin-qizlar kuni','21.3':'Navro\'z','9.5':'Xotira kuni','1.9':'Mustaqillik','1.10':'O\'qituvchilar kuni','8.12':'Konstitutsiya'};
+const KEYS=['type','n','m','start','from','to','brk','pre','year','hol','extra'];
+const now=new Date();
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const day0=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
+$('start').value=iso(now);$('year').value=now.getFullYear();
+try{const s=JSON.parse(localStorage.getItem('ishgrafik')||'{}');KEYS.forEach(k=>{if(s[k]!==undefined){if(k==='hol')$(k).checked=s[k];else $(k).value=s[k]}})}catch(e){}
+let view=new Date(now.getFullYear(),now.getMonth(),1);
+
+function cfg(){
+  const t=$('type').value;let n=+$('n').value||1,m=+$('m').value||1;
+  if(t.startsWith('c')){[n,m]=t.slice(1).split('-').map(Number)}
+  const [fh,fm]=($('from').value||'08:00').split(':').map(Number),[th,tm]=($('to').value||'17:00').split(':').map(Number);
+  let mins=(th*60+tm)-(fh*60+fm);if(mins<=0)mins+=1440;
+  const brk=Math.max(0,+$('brk').value||0);
+  const extra=new Set(($('extra').value||'').split(/[,\s;]+/).filter(Boolean).map(x=>{const[a,b]=x.split(/[./-]/).map(Number);return a&&b?a+'.'+b:''}));
+  const sp=($('start').value||iso(now)).split('-').map(Number);
+  return{t,n,m,fh,fm,mins,hrs:Math.max(0,mins-brk)/60,pre:+$('pre').value||0,hol:$('hol').checked,extra,start:new Date(sp[0],sp[1]-1,sp[2])};
+}
+function holName(c,d){const k=d.getDate()+'.'+(d.getMonth()+1);if(c.extra.has(k))return'Dam kuni';if(c.hol&&FIX[k])return FIX[k];return''}
+function isWork(c,d){
+  if(holName(c,d))return false;
+  if(c.t==='w5'){const w=d.getDay();return w>=1&&w<=5}
+  if(c.t==='w6')return d.getDay()!==0;
+  const diff=Math.round((day0(d)-c.start)/864e5),L=c.n+c.m;
+  return ((diff%L)+L)%L<c.n;
+}
+const hm=(h,m)=>String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+function endStr(c){const e=c.fh*60+c.fm+c.mins;return hm(Math.floor(e/60)%24,e%60)+(e>=1440?' (ertasi)':'')}
+function alarmAt(c,d){const a=new Date(d.getFullYear(),d.getMonth(),d.getDate(),c.fh,c.fm);a.setMinutes(a.getMinutes()-c.pre);return a}
+const fmtH=h=>(Math.round(h*10)/10).toLocaleString('uz-UZ');
+
+function render(){
+  const c=cfg();
+  const cyc=c.t.startsWith('c')||c.t==='custom';
+  $('cN').style.display=$('cM').style.display=c.t==='custom'?'':'none';
+  $('cS').style.display=cyc?'':'none';
+  try{const s={};KEYS.forEach(k=>s[k]=k==='hol'?$(k).checked:$(k).value);localStorage.setItem('ishgrafik',JSON.stringify(s))}catch(e){}
+
+  // Bugun
+  const td=day0(now),w=isWork(c,td),hn=holName(c,td);
+  let nx=new Date(td);for(let i=0;i<400;i++){nx.setDate(nx.getDate()+1);if(isWork(c,nx))break}
+  const al=alarmAt(c,td);
+  $('today').className='pan today'+(w?' work':'');
+  $('today').innerHTML=`<div class="lab">Bugun, ${td.getDate()} ${OY[td.getMonth()].toLowerCase()}, ${HAFT[td.getDay()]}</div>
+   <div class="big">${w?'Ish kuni':(hn?esc(hn)+' — dam':'Dam olish kuni')}</div>
+   ${w?`<div class="hrs">${hm(c.fh,c.fm)} – ${endStr(c)}</div><div class="row"><span class="pill">${fmtH(c.hrs)} soat ish</span><span class="pill r">Budilnik ${hm(al.getHours(),al.getMinutes())}</span></div>`
+      :`<div class="row"><span class="pill">Keyingi ish: ${nx.getDate()} ${OY[nx.getMonth()].toLowerCase()}, ${HAFT[nx.getDay()]}</span><span class="pill">${hm(c.fh,c.fm)} – ${endStr(c)}</span></div>`}`;
+
+  // Taqvim
+  const y=view.getFullYear(),mo=view.getMonth();$('mname').textContent=OY[mo]+' '+y;
+  const first=(new Date(y,mo,1).getDay()+6)%7,dim=new Date(y,mo+1,0).getDate();
+  let h=HAF.map(x=>`<div class="dow">${x}</div>`).join('')+'<div class="d e"></div>'.repeat(first);
+  for(let i=1;i<=dim;i++){const d=new Date(y,mo,i),ww=isWork(c,d),hh=holName(c,d),t=+d===+td;
+    h+=`<div class="d${ww?' w':''}${hh?' h':''}${t?' t':''}" title="${hh?esc(hh):''}">${i}<small>${ww?hm(c.fh,c.fm):(hh?esc(hh):'')}</small></div>`}
+  $('cal').innerHTML=h;
+
+  // Yillik hisob
+  const Y=+$('year').value||now.getFullYear();let rows='',tw=0,tdays=0,mx=0;const ms=[];
+  for(let m=0;m<12;m++){const n=new Date(Y,m+1,0).getDate();let k=0;for(let i=1;i<=n;i++)if(isWork(c,new Date(Y,m,i)))k++;ms.push([k,n]);mx=Math.max(mx,k);tw+=k;tdays+=n}
+  ms.forEach(([k,n],m)=>{rows+=`<tr class="${Y===now.getFullYear()&&m===now.getMonth()?'cur':''}"><td>${OY[m]}</td><td>${k}</td><td>${n-k}</td><td>${fmtH(k*c.hrs)}</td><td class="barc" style="width:30%"><span class="bar" style="width:${mx?k/mx*100:0}%"></span></td></tr>`});
+  $('tb').innerHTML=rows;
+  $('tf').innerHTML=`<tr><td>Jami ${Y}</td><td>${tw}</td><td>${tdays-tw}</td><td>${fmtH(tw*c.hrs)}</td><td class="barc"></td></tr>`;
+  const cm=Y===now.getFullYear()?now.getMonth():mo,cur=ms[cm][0];
+  $('statH').textContent=`${Y}-yil hisobi`;
+  $('stats').innerHTML=[
+    [OY[cm]+' — ish kunlari',cur,'kun'],[OY[cm]+' — ish soatlari',fmtH(cur*c.hrs),'soat'],
+    ['Yilda ish kunlari',tw,'kun'],['Yilda ish soatlari',fmtH(tw*c.hrs),'soat'],
+    ['Oyiga o\'rtacha',fmtH(tw/12),'kun'],['Bir smena',fmtH(c.hrs),'soat']
+  ].map(([a,b,u])=>`<div class="st"><span>${a}</span><b>${b}<em>${u}</em></b></div>`).join('');
+
+  // Yaqin ish kunlari
+  let up='',d=new Date(td),cnt=0;for(let i=0;i<400&&cnt<7;i++){if(isWork(c,d)){const a=alarmAt(c,d);up+=`<tr><td>${d.getDate()} ${OY[d.getMonth()].toLowerCase()}, ${HAFT[d.getDay()]}</td><td>${hm(c.fh,c.fm)} – ${endStr(c)}</td><td>${hm(a.getHours(),a.getMinutes())}${a.getDate()!==d.getDate()?' (oldingi kun)':''}</td></tr>`;cnt++}d.setDate(d.getDate()+1)}
+  $('up').innerHTML=up;
+  syncNative();
+}
+function esc(s){return String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+
+// Budilnik
+let armed=false,ac=null,beepT=null;const fired=new Set();
+let loud=0;
+function beep(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();ac.resume();
+  // Yumshoq marimba ohangi: do-mi-sol-do arpedjio, aks-sado bilan, asta balandlashadi
+  const notes=[523.25,659.25,783.99,1046.5,987.77,783.99,880,1046.5],t0=ac.currentTime+.05;
+  const out=ac.createGain();out.gain.value=Math.min(.55,.16+loud*.05);loud++;
+  const dl=ac.createDelay(),fb=ac.createGain(),wet=ac.createGain();dl.delayTime.value=.23;fb.gain.value=.28;wet.gain.value=.35;
+  out.connect(ac.destination);out.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(ac.destination);
+  notes.forEach((f,i)=>{const t=t0+i*.22;[[f,1,1.6],[f*2,.22,.6],[f*4,.1,.22]].forEach(([fr,v,dur])=>{const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=fr;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(out);o.start(t);o.stop(t+dur+.05)})})}catch(e){}}
+function ring(text){$('almX').textContent=text;$('alarm').classList.add('on');loud=0;beep();clearInterval(beepT);beepT=setInterval(beep,3500);
+  try{if(window.Notification&&Notification.permission==='granted')new Notification('Bugun ish kuni!',{body:text})}catch(e){}
+  try{navigator.vibrate&&navigator.vibrate([400,200,400])}catch(e){}}
+function check(){if(!armed||APP)return;const c=cfg(),n=new Date();
+  for(const off of[0,1]){const d=day0(n);d.setDate(d.getDate()+off);if(!isWork(c,d))continue;const a=alarmAt(c,d),k=iso(d);
+    if(n>=a&&n-a<10*60e3&&!fired.has(k)){fired.add(k);ring(`Ish ${hm(c.fh,c.fm)} da boshlanadi, ${endStr(c)} da tugaydi.`)}}}
+// Android ilova ichida: haqiqiy budilnik telefonning o'zida qo'yiladi
+const APP=typeof window.Android==='object'&&window.Android!==null;
+if(APP)$('almHint').textContent='Budilnik telefonning o\'zida qo\'yiladi: ilova yopiq yoki telefon qulflangan bo\'lsa ham chaladi. Har bir ish kuni uchun vaqt pastda ko\'rsatilgan.';
+function syncNative(){if(!APP)return;const c=cfg(),arr=[];
+  if(armed){const d=day0(new Date());for(let i=0;i<200&&arr.length<60;i++){if(isWork(c,d)){const a=alarmAt(c,d);if(+a>Date.now())arr.push({t:+a,x:`Ish ${hm(c.fh,c.fm)} – ${endStr(c)}`})}d.setDate(d.getDate()+1)}}
+  try{window.Android.setAlarms(JSON.stringify(arr))}catch(e){}}
+function setArmed(v){armed=v;$('almBtn').textContent=armed?'Budilnikni o\'chirish':'Budilnikni yoqish';
+  $('almState').textContent=armed?(APP?'Yoqildi — ish kunlari telefon o\'zi chaladi.':'Yoqildi — sahifani ochiq qoldiring.'):'';
+  try{localStorage.setItem('ishgrafik_alarm',armed?'1':'0')}catch(e){}
+  syncNative()}
+$('almBtn').addEventListener('click',()=>{setArmed(!armed);
+  if(!APP){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}
+  try{if(armed&&window.Notification&&Notification.permission==='default')Notification.requestPermission().catch(()=>{})}catch(e){}
+  check()}});
+$('test').addEventListener('click',()=>{const c=cfg();if(APP){try{window.Android.test(`Sinov: ish ${hm(c.fh,c.fm)} – ${endStr(c)}`);return}catch(e){}}ring(`Sinov: ish ${hm(c.fh,c.fm)} – ${endStr(c)}.`)});
+try{if(localStorage.getItem('ishgrafik_alarm')==='1')setArmed(true)}catch(e){}
+$('stop').addEventListener('click',()=>{clearInterval(beepT);$('alarm').classList.remove('on')});
+setInterval(()=>{check();if(new Date().getDate()!==now.getDate()){now.setTime(Date.now());render()}},15000);
+
+$('prev').addEventListener('click',()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()});
+$('next').addEventListener('click',()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()});
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowLeft')$('prev').click();if(e.key==='ArrowRight')$('next').click()});
+KEYS.forEach(k=>$(k).addEventListener(k==='hol'||k==='type'?'change':'input',render));
+
+// Sahifalar: pastki tugmalar va yonga surish
+const pg=$('pages'),tabs=[...document.querySelectorAll('#tabs button')],ids=['grafik','hisob','budilnik','sozlamalar'];let cur=0;
+function setTab(i){cur=i;tabs.forEach((b,j)=>b.setAttribute('aria-selected',j===i?'true':'false'))}
+function go(i,smooth=true){pg.scrollTo({left:i*pg.clientWidth,behavior:smooth&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'auto'});setTab(i);try{history.replaceState(null,'','#'+ids[i])}catch(e){}}
+tabs.forEach((b,i)=>b.addEventListener('click',()=>go(i)));
+let st=null;pg.addEventListener('scroll',()=>{const i=Math.round(pg.scrollLeft/Math.max(1,pg.clientWidth));if(i!==cur)setTab(i);clearTimeout(st);st=setTimeout(()=>{try{history.replaceState(null,'','#'+ids[cur])}catch(e){}},200)},{passive:true});
+const pro=new ResizeObserver(()=>pg.scrollTo({left:cur*pg.clientWidth}));pro.observe(pg);
+const h0=ids.indexOf(location.hash.slice(1));if(h0>0)requestAnimationFrame(()=>go(h0,false));
+render();
+}
+</script>
+</body>
+</html>
