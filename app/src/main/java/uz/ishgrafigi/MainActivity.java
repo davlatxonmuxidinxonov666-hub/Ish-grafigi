@@ -100,6 +100,11 @@ public class MainActivity extends Activity {
             });
         }
 
+        @JavascriptInterface
+        public void setLang(String lang) {
+            if ("uz".equals(lang) || "ru".equals(lang) || "en".equals(lang)) Lang.set(app, lang);
+        }
+
         /** Mavzuga qarab tepa va pastki tizim panellarining rangi. */
         @JavascriptInterface
         public void setBars(String theme) {

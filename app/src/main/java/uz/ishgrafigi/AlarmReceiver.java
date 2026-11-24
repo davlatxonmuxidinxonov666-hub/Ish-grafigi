@@ -8,7 +8,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context c, Intent intent) {
         String text = intent.getStringExtra("text");
-        if (text == null || text.isEmpty()) text = "Ish kuni boshlanmoqda";
+        if (text == null || text.isEmpty()) text = Lang.starting(c);
         Ring.show(c, text);
         if (!intent.getBooleanExtra("snooze", false)) {
             AlarmStore.scheduleNext(c);

@@ -19,7 +19,7 @@ public final class Ring {
     static void ensureChannel(Context c) {
         NotificationManager nm = c.getSystemService(NotificationManager.class);
         if (nm == null || nm.getNotificationChannel(CHANNEL) != null) return;
-        NotificationChannel ch = new NotificationChannel(CHANNEL, "Budilnik",
+        NotificationChannel ch = new NotificationChannel(CHANNEL, Lang.channel(c),
                 NotificationManager.IMPORTANCE_HIGH);
         ch.setDescription("Ish kunlari ertalabki budilnik");
         Uri sound = Uri.parse("android.resource://" + c.getPackageName() + "/" + R.raw.melody);
@@ -47,7 +47,7 @@ public final class Ring {
         Notification n = new Notification.Builder(c, CHANNEL)
                 .setSmallIcon(R.drawable.ic_stat_alarm)
                 .setColor(0xFF16A34A)
-                .setContentTitle("Bugun ish kuni!")
+                .setContentTitle(Lang.title(c))
                 .setContentText(text)
                 .setCategory(Notification.CATEGORY_ALARM)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)

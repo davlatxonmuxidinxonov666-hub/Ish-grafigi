@@ -80,7 +80,7 @@ public class AlarmActivity extends Activity {
         root.addView(clock);
 
         TextView title = new TextView(this);
-        title.setText("Bugun ish kuni!");
+        title.setText(Lang.title(this));
         title.setTextColor(Color.WHITE);
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         title.setTypeface(Typeface.DEFAULT_BOLD);
@@ -96,11 +96,11 @@ public class AlarmActivity extends Activity {
         sub.setPadding(0, 0, 0, dp(36));
         root.addView(sub);
 
-        Button stop = makeButton("To'xtatish", Color.WHITE, 0xFFDC2626);
+        Button stop = makeButton(Lang.stop(this), Color.WHITE, 0xFFDC2626);
         stop.setOnClickListener(v -> stopAndClose());
         root.addView(stop);
 
-        Button later = makeButton("Yana 5 daqiqa", 0x33FFFFFF, Color.WHITE);
+        Button later = makeButton(Lang.snooze(this), 0x33FFFFFF, Color.WHITE);
         later.setOnClickListener(v -> {
             AlarmStore.snooze(this, text, 5 * 60 * 1000L);
             stopAndClose();

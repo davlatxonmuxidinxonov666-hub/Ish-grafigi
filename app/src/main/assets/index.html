@@ -138,6 +138,20 @@ button:active,.st:active{transform:scale(.97);transition-duration:.15s}
 [data-theme=violet] .live{background:#c2abff;animation-name:pingv}
 @keyframes pingv{0%{box-shadow:0 0 0 0 rgba(194,171,255,.6)}70%,100%{box-shadow:0 0 0 11px rgba(194,171,255,0)}}
 [data-theme=violet] .st b{color:#d4c4ff}[data-theme=violet] .st:nth-child(4) b{color:#f9a8d4}
+/* Til tanlash oynasi */
+.lp{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:24px;background:radial-gradient(120% 80% at 80% 0%,#22c55e 0%,#15803d 45%,#0f3d24 100%)}
+[data-theme=violet] .lp{background:radial-gradient(130% 80% at 85% 0%,#7044ff 0%,#3b1a92 45%,#140b2e 100%)}
+.lp[hidden]{display:none}
+.lp.out{opacity:0;transform:scale(1.02);transition:opacity .45s cubic-bezier(.25,.8,.25,1),transform .45s cubic-bezier(.25,.8,.25,1)}
+.lpc{width:min(100%,380px);display:flex;flex-direction:column;gap:12px;color:#fff;text-align:center}
+.lpi{width:72px;height:72px;margin:0 auto 6px;border-radius:22px;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25)}
+.lpi svg{width:40px;height:40px}
+.lp h2{font-size:28px;line-height:1.15;margin:0 0 10px;color:#fff}.lp h2 small{display:block;font-size:15px;font-weight:500;opacity:.8;margin-top:6px}
+.lpb{display:flex;justify-content:space-between;align-items:center;min-height:62px;padding:0 20px;border-radius:18px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.14);color:#fff;font-size:19px;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.lpb span{font-size:13px;font-weight:700;opacity:.75;letter-spacing:.04em}
+.lpb:hover,.lpb:focus-visible{background:rgba(255,255,255,.24)}
+.lpc>*{animation:lpin .6s cubic-bezier(.25,.8,.25,1) both}.lpc>:nth-child(2){animation-delay:.05s}.lpc>:nth-child(3){animation-delay:.1s}.lpc>:nth-child(4){animation-delay:.15s}.lpc>:nth-child(5){animation-delay:.2s}
+@keyframes lpin{from{opacity:0;transform:translateY(8px)}}
 @keyframes pulse{to{transform:translateY(-4px)}}
 @media(prefers-reduced-motion:reduce){.alarm.on{animation:none}}
 @media(max-width:820px){.top{grid-template-columns:minmax(0,1fr)}}
@@ -148,108 +162,126 @@ button:active,.st:active{transform:scale(.97);transition-duration:.15s}
 <main class="pages" id="pages">
 <section class="page hero-page" id="grafik" aria-label="Grafik">
 <div class="band hero"><div class="wrap">
-  <h1>Ish grafigi va budilnik</h1>
-  <p class="sub">Grafikni «Sozlamalar» bo'limida o'zgartiring.</p>
+  <h1 data-i18n="title">Ish grafigi va budilnik</h1>
+  <p class="sub" data-i18n="sub">Grafikni «Sozlamalar» bo'limida o'zgartiring.</p>
 
   <div class="top">
     <section class="pan today" id="today" aria-live="polite"></section>
     <section class="pan">
       <div class="calh">
-        <button class="nav" id="prev" aria-label="Oldingi oy">‹</button>
+        <button class="nav" id="prev" aria-label="Oldingi oy" data-i18n-aria="prev">‹</button>
         <b id="mname"></b>
-        <button class="nav" id="next" aria-label="Keyingi oy">›</button>
+        <button class="nav" id="next" aria-label="Keyingi oy" data-i18n-aria="next">›</button>
       </div>
       <div class="grid7" id="cal"></div>
-      <div class="leg"><span><i style="background:var(--acc)"></i>Ish kuni</span><span><i style="background:var(--soft);border:1px solid var(--line)"></i>Dam olish</span><span><i style="background:var(--red2);border:1px solid var(--red)"></i>Bayram</span><span><i style="outline:2px solid var(--red)"></i>Bugun</span></div>
+      <div class="leg"><span><i style="background:var(--acc)"></i><span data-i18n="lg_work">Ish kuni</span></span><span><i style="background:var(--soft);border:1px solid var(--line)"></i><span data-i18n="lg_off">Dam olish</span></span><span><i style="background:var(--red2);border:1px solid var(--red)"></i><span data-i18n="lg_hol">Bayram</span></span><span><i style="outline:2px solid var(--red)"></i><span data-i18n="lg_today">Bugun</span></span></div>
     </section>
   </div>
 </div></div>
-<p class="swipe">Yonga suring — hisob, budilnik va sozlamalar ›</p>
+<p class="swipe" data-i18n="swipe">Yonga suring — hisob, budilnik va sozlamalar ›</p>
 </section>
 
 <section class="page" id="hisob" aria-label="Hisob"><div class="band"><div class="wrap">
-  <h1 class="ph">Hisob</h1>
+  <h1 class="ph" data-i18n="tab_h">Hisob</h1>
   <h2 id="statH"></h2>
   <div class="stats" id="stats"></div>
-  <h2>Oylar bo'yicha</h2>
+  <h2 data-i18n="bymonth">Oylar bo'yicha</h2>
   <div class="scroll"><table>
-    <thead><tr><th>Oy</th><th>Ish kunlari</th><th>Dam kunlari</th><th>Ish soatlari</th><th class="barc"></th></tr></thead>
+    <thead><tr><th data-i18n="th_m">Oy</th><th data-i18n="th_wd">Ish kunlari</th><th data-i18n="th_od">Dam kunlari</th><th data-i18n="th_wh">Ish soatlari</th><th class="barc"></th></tr></thead>
     <tbody id="tb"></tbody><tfoot id="tf"></tfoot>
   </table></div>
 </div></div></section>
 
 <section class="page" id="budilnik" aria-label="Budilnik"><div class="band"><div class="wrap">
-  <h1 class="ph">Budilnik</h1>
+  <h1 class="ph" data-i18n="tab_b">Budilnik</h1>
   <div class="pan">
   <div class="row" style="margin-top:14px">
     <button class="pri" id="almBtn">Budilnikni yoqish</button>
-    <button id="test">Ovozni sinash</button>
+    <button id="test" data-i18n="test">Ovozni sinash</button>
     <span class="hint" id="almState" style="margin:0"></span>
   </div>
   <p class="hint" id="almHint">Sahifa ochiq turganda budilnik ovoz va xabar bilan chaladi. Telefon yopiq bo'lsa ham chalishi uchun telefonning o'z budilnigiga qo'ying — pastda har bir ish kuni uchun vaqt ko'rsatilgan.</p>
   </div>
-  <h2 style="margin-top:24px">Yaqin 7 ish kuni</h2>
-  <div class="scroll"><table><thead><tr><th>Sana</th><th>Ish vaqti</th><th>Budilnik</th></tr></thead><tbody id="up"></tbody></table></div>
+  <h2 style="margin-top:24px" data-i18n="next7">Yaqin 7 ish kuni</h2>
+  <div class="scroll"><table><thead><tr><th data-i18n="th_date">Sana</th><th data-i18n="th_time">Ish vaqti</th><th data-i18n="th_alm">Budilnik</th></tr></thead><tbody id="up"></tbody></table></div>
 
 </div></div></section>
 
 <section class="page" id="sozlamalar" aria-label="Sozlamalar"><div class="band"><div class="wrap pan">
-  <h1 class="ph">Sozlamalar</h1>
+  <h1 class="ph" data-i18n="tab_s">Sozlamalar</h1>
   <div class="form">
-    <label>Grafik turi
+    <label><span data-i18n="f_type">Grafik turi</span>
       <select id="type">
-        <option value="w5">5/2 — dushanba–juma</option>
-        <option value="w6">6/1 — dushanba–shanba</option>
-        <option value="c2-2">2/2 — 2 kun ish, 2 kun dam</option>
-        <option value="c3-3">3/3 — 3 kun ish, 3 kun dam</option>
-        <option value="c4-4">4/4 — 4 kun ish, 4 kun dam</option>
-        <option value="c1-2">1/2 — sutka, 2 kun dam</option>
-        <option value="c1-3">1/3 — sutka, 3 kun dam</option>
-        <option value="custom">O'zim kiritaman (N/M)</option>
+        <option value="w5" data-i18n="o_w5">5/2 — dushanba–juma</option>
+        <option value="w6" data-i18n="o_w6">6/1 — dushanba–shanba</option>
+        <option value="c2-2" data-i18n="o_c22">2/2 — 2 kun ish, 2 kun dam</option>
+        <option value="c3-3" data-i18n="o_c33">3/3 — 3 kun ish, 3 kun dam</option>
+        <option value="c4-4" data-i18n="o_c44">4/4 — 4 kun ish, 4 kun dam</option>
+        <option value="c1-2" data-i18n="o_c12">1/2 — sutka, 2 kun dam</option>
+        <option value="c1-3" data-i18n="o_c13">1/3 — sutka, 3 kun dam</option>
+        <option value="custom" data-i18n="o_cus">O'zim kiritaman (N/M)</option>
       </select>
     </label>
-    <label id="cN">Ish kunlari (N)<input id="n" type="number" min="1" max="30" value="2"></label>
-    <label id="cM">Dam kunlari (M)<input id="m" type="number" min="1" max="30" value="2"></label>
-    <label id="cS">Navbatdagi birinchi ish kuni<input id="start" type="date"></label>
-    <label>Ish boshlanishi<input id="from" type="time" value="08:00"></label>
-    <label>Ish tugashi<input id="to" type="time" value="17:00"></label>
-    <label>Tushlik tanaffusi (daqiqa)<input id="brk" type="number" min="0" max="240" step="5" value="60"></label>
-    <label>Budilnik: ishdan necha daqiqa oldin<input id="pre" type="number" min="0" max="600" step="5" value="90"></label>
-    <label>Hisob yili<input id="year" type="number" min="2000" max="2100"></label>
-    <label>Ko'rinish (mavzu)
+    <label id="cN"><span data-i18n="f_n">Ish kunlari (N)</span><input id="n" type="number" min="1" max="30" value="2"></label>
+    <label id="cM"><span data-i18n="f_m">Dam kunlari (M)</span><input id="m" type="number" min="1" max="30" value="2"></label>
+    <label id="cS"><span data-i18n="f_start">Navbatdagi birinchi ish kuni</span><input id="start" type="date"></label>
+    <label><span data-i18n="f_from">Ish boshlanishi</span><input id="from" type="time" value="08:00"></label>
+    <label><span data-i18n="f_to">Ish tugashi</span><input id="to" type="time" value="17:00"></label>
+    <label><span data-i18n="f_brk">Tushlik tanaffusi (daqiqa)</span><input id="brk" type="number" min="0" max="240" step="5" value="60"></label>
+    <label><span data-i18n="f_pre">Budilnik: ishdan necha daqiqa oldin</span><input id="pre" type="number" min="0" max="600" step="5" value="90"></label>
+    <label><span data-i18n="f_year">Hisob yili</span><input id="year" type="number" min="2000" max="2100"></label>
+    <label><span data-i18n="f_lang">Til</span>
+      <select id="lang">
+        <option value="uz">O'zbekcha</option>
+        <option value="ru">Русский</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+    <label><span data-i18n="f_theme">Ko'rinish (mavzu)</span>
       <select id="theme">
-        <option value="auto">Avtomatik — telefon bo'yicha</option>
-        <option value="dark">Qorong'i</option>
-        <option value="light">Yorug'</option>
-        <option value="violet">Binafsha (shisha)</option>
+        <option value="auto" data-i18n="th_auto">Avtomatik — telefon bo'yicha</option>
+        <option value="dark" data-i18n="th_dark">Qorong'i</option>
+        <option value="light" data-i18n="th_light">Yorug'</option>
+        <option value="violet" data-i18n="th_violet">Binafsha (shisha)</option>
       </select>
     </label>
-    <label class="chk"><input id="hol" type="checkbox" checked>O'zbekiston bayramlarida dam</label>
-    <label style="grid-column:1/-1">Qo'shimcha dam kunlari (masalan Hayit, otpusk): KK.OO formatda, vergul bilan
+    <label class="chk"><input id="hol" type="checkbox" checked><span data-i18n="f_hol">O'zbekiston bayramlarida dam</span></label>
+    <label style="grid-column:1/-1"><span data-i18n="f_extra">Qo'shimcha dam kunlari (masalan Hayit, otpusk): KK.OO formatda, vergul bilan</span>
       <input id="extra" type="text" placeholder="20.03, 21.03, 27.05">
     </label>
   </div>
-  <p class="hint" id="nh">Tugash vaqti boshlanishdan erta bo'lsa (masalan 20:00–08:00), smena ertasi kunga o'tadi deb hisoblanadi. Sutka uchun 08:00–08:00 kiriting.</p>
+  <p class="hint" id="nh" data-i18n="nh">Tugash vaqti boshlanishdan erta bo'lsa (masalan 20:00–08:00), smena ertasi kunga o'tadi deb hisoblanadi. Sutka uchun 08:00–08:00 kiriting.</p>
 </div></div></section>
 </main>
 
 <nav class="tabs" id="tabs" role="tablist">
   <span class="ind" id="ind" aria-hidden="true"></span>
-  <button role="tab" aria-selected="true" data-i="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M7.5 13.5h3v3h-3z" fill="currentColor"/></svg><span>Grafik</span></button>
-  <button role="tab" aria-selected="false" data-i="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V4"/></svg><span>Hisob</span></button>
-  <button role="tab" aria-selected="false" data-i="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M4 4.5 6.5 2.5M20 4.5 17.5 2.5"/></svg><span>Budilnik</span></button>
-  <button role="tab" aria-selected="false" data-i="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.3"/><circle cx="10" cy="17" r="2.3"/></svg><span>Sozlamalar</span></button>
+  <button role="tab" aria-selected="true" data-i="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M7.5 13.5h3v3h-3z" fill="currentColor"/></svg><span data-i18n="tab_g">Grafik</span></button>
+  <button role="tab" aria-selected="false" data-i="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M10 20V6M15 20v-9M20 20V4"/></svg><span data-i18n="tab_h">Hisob</span></button>
+  <button role="tab" aria-selected="false" data-i="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M4 4.5 6.5 2.5M20 4.5 17.5 2.5"/></svg><span data-i18n="tab_b">Budilnik</span></button>
+  <button role="tab" aria-selected="false" data-i="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.3"/><circle cx="10" cy="17" r="2.3"/></svg><span data-i18n="tab_s">Sozlamalar</span></button>
 </nav>
 
-<div class="alarm" id="alarm" role="alertdialog" aria-live="assertive"><b id="almT">Turish vaqti!</b><span id="almX"></span><br><button id="stop">To'xtatish</button></div>
+<div class="lp" id="lp" role="dialog" aria-modal="true" aria-labelledby="lpT" hidden>
+  <div class="lpc">
+    <div class="lpi" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="24" cy="24" r="18"/><path d="M6 24h36M24 6c5 5 7.5 11 7.5 18S29 37 24 42M24 6c-5 5-7.5 11-7.5 18S19 37 24 42"/></svg></div>
+    <h2 id="lpT">Tilni tanlang<br><small>Выберите язык · Choose language</small></h2>
+    <button class="lpb" data-l="uz"><b>O'zbekcha</b><span>UZ</span></button>
+    <button class="lpb" data-l="ru"><b>Русский</b><span>RU</span></button>
+    <button class="lpb" data-l="en"><b>English</b><span>EN</span></button>
+  </div>
+</div>
+<div class="alarm" id="alarm" role="alertdialog" aria-live="assertive"><b id="almT" data-i18n="alm_title">Turish vaqti!</b><span id="almX"></span><br><button id="stop" data-i18n="stop">To'xtatish</button></div>
 
 <script>
 {
 const $=id=>document.getElementById(id);
-const OY=['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
-const HAF=['Du','Se','Ch','Pa','Ju','Sh','Ya'];
-const HAFT=['yakshanba','dushanba','seshanba','chorshanba','payshanba','juma','shanba'];
-const FIX={'1.1':'Yangi yil','8.3':'Xotin-qizlar kuni','21.3':'Navro\'z','9.5':'Xotira kuni','1.9':'Mustaqillik','1.10':'O\'qituvchilar kuni','8.12':'Konstitutsiya'};
+const I18N={"uz": {"title": "Ish grafigi va budilnik", "sub": "Grafikni «Sozlamalar» bo'limida o'zgartiring.", "prev": "Oldingi oy", "next": "Keyingi oy", "lg_work": "Ish kuni", "lg_off": "Dam olish", "lg_hol": "Bayram", "lg_today": "Bugun", "swipe": "Yonga suring — hisob, budilnik va sozlamalar ›", "tab_g": "Grafik", "tab_h": "Hisob", "tab_b": "Budilnik", "tab_s": "Sozlamalar", "bymonth": "Oylar bo'yicha", "th_m": "Oy", "th_wd": "Ish kunlari", "th_od": "Dam kunlari", "th_wh": "Ish soatlari", "alm_on": "Budilnikni yoqish", "alm_off": "Budilnikni o'chirish", "test": "Ovozni sinash", "hint_web": "Sahifa ochiq turganda budilnik ovoz va xabar bilan chaladi. Telefon yopiq bo'lsa ham chalishi uchun telefonning o'z budilnigiga qo'ying — pastda har bir ish kuni uchun vaqt ko'rsatilgan.", "hint_app": "Budilnik telefonning o'zida qo'yiladi: ilova yopiq yoki telefon qulflangan bo'lsa ham chaladi. Har bir ish kuni uchun vaqt pastda ko'rsatilgan.", "st_app": "Yoqildi — ish kunlari telefon o'zi chaladi.", "st_web": "Yoqildi — sahifani ochiq qoldiring.", "next7": "Yaqin 7 ish kuni", "th_date": "Sana", "th_time": "Ish vaqti", "th_alm": "Budilnik", "f_type": "Grafik turi", "o_w5": "5/2 — dushanba–juma", "o_w6": "6/1 — dushanba–shanba", "o_c22": "2/2 — 2 kun ish, 2 kun dam", "o_c33": "3/3 — 3 kun ish, 3 kun dam", "o_c44": "4/4 — 4 kun ish, 4 kun dam", "o_c12": "1/2 — sutka, 2 kun dam", "o_c13": "1/3 — sutka, 3 kun dam", "o_cus": "O'zim kiritaman (N/M)", "f_n": "Ish kunlari (N)", "f_m": "Dam kunlari (M)", "f_start": "Navbatdagi birinchi ish kuni", "f_from": "Ish boshlanishi", "f_to": "Ish tugashi", "f_brk": "Tushlik tanaffusi (daqiqa)", "f_pre": "Budilnik: ishdan necha daqiqa oldin", "f_year": "Hisob yili", "f_lang": "Til", "f_theme": "Ko'rinish (mavzu)", "th_auto": "Avtomatik — telefon bo'yicha", "th_dark": "Qorong'i", "th_light": "Yorug'", "th_violet": "Binafsha (shisha)", "f_hol": "O'zbekiston bayramlarida dam", "f_extra": "Qo'shimcha dam kunlari (masalan Hayit, otpusk): KK.OO formatda, vergul bilan", "nh": "Tugash vaqti boshlanishdan erta bo'lsa (masalan 20:00–08:00), smena ertasi kunga o'tadi deb hisoblanadi. Sutka uchun 08:00–08:00 kiriting.", "alm_title": "Turish vaqti!", "stop": "To'xtatish", "today": "Bugun", "workday": "Ish kuni", "dayoff": "Dam olish kuni", "holoff": "{h} — dam", "hrs": "{n} soat ish", "alarm": "Budilnik {t}", "nextw": "Keyingi ish: {d}", "nextday": "(ertasi)", "prevday": "(oldingi kun)", "total": "Jami {y}", "ystat": "{y}-yil hisobi", "s_mwd": "{m} — ish kunlari", "s_mwh": "{m} — ish soatlari", "s_ywd": "Yilda ish kunlari", "s_ywh": "Yilda ish soatlari", "s_avg": "Oyiga o'rtacha", "s_shift": "Bir smena", "u_d": "kun", "u_h": "soat", "xday": "Dam kuni", "hol_ny": "Yangi yil", "hol_w8": "Xotin-qizlar kuni", "hol_nav": "Navro'z", "hol_mem": "Xotira kuni", "hol_ind": "Mustaqillik", "hol_tch": "O'qituvchilar kuni", "hol_con": "Konstitutsiya", "ringm": "Ish {s} da boshlanadi, {e} da tugaydi.", "almx": "Ish {s} – {e}", "testx": "Sinov: ish {s} – {e}", "ntitle": "Bugun ish kuni!", "m": ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"], "mg": ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"], "wd": ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"], "dn": ["yakshanba", "dushanba", "seshanba", "chorshanba", "payshanba", "juma", "shanba"]}, "ru": {"title": "График работы и будильник", "sub": "Измените график в разделе «Настройки».", "prev": "Предыдущий месяц", "next": "Следующий месяц", "lg_work": "Рабочий день", "lg_off": "Выходной", "lg_hol": "Праздник", "lg_today": "Сегодня", "swipe": "Листайте в сторону — статистика, будильник и настройки ›", "tab_g": "График", "tab_h": "Статистика", "tab_b": "Будильник", "tab_s": "Настройки", "bymonth": "По месяцам", "th_m": "Месяц", "th_wd": "Рабочие дни", "th_od": "Выходные", "th_wh": "Рабочие часы", "alm_on": "Включить будильник", "alm_off": "Выключить будильник", "test": "Проверить звук", "hint_web": "Будильник звонит, пока страница открыта. Чтобы он звонил и при закрытом телефоне, поставьте его в будильник телефона — ниже указано время для каждого рабочего дня.", "hint_app": "Будильник ставится в самом телефоне: он прозвонит, даже если приложение закрыто или телефон заблокирован. Время для каждого рабочего дня указано ниже.", "st_app": "Включено — в рабочие дни телефон прозвонит сам.", "st_web": "Включено — не закрывайте страницу.", "next7": "Ближайшие 7 рабочих дней", "th_date": "Дата", "th_time": "Время работы", "th_alm": "Будильник", "f_type": "Тип графика", "o_w5": "5/2 — понедельник–пятница", "o_w6": "6/1 — понедельник–суббота", "o_c22": "2/2 — 2 дня работы, 2 выходных", "o_c33": "3/3 — 3 дня работы, 3 выходных", "o_c44": "4/4 — 4 дня работы, 4 выходных", "o_c12": "1/2 — сутки, 2 выходных", "o_c13": "1/3 — сутки, 3 выходных", "o_cus": "Свой вариант (N/M)", "f_n": "Рабочие дни (N)", "f_m": "Выходные (M)", "f_start": "Первый рабочий день цикла", "f_from": "Начало работы", "f_to": "Конец работы", "f_brk": "Обеденный перерыв (мин)", "f_pre": "Будильник: за сколько минут до работы", "f_year": "Год для статистики", "f_lang": "Язык", "f_theme": "Оформление (тема)", "th_auto": "Автоматически — как в телефоне", "th_dark": "Тёмная", "th_light": "Светлая", "th_violet": "Фиолетовая (стекло)", "f_hol": "Выходной в праздники Узбекистана", "f_extra": "Дополнительные выходные (например, Хайит, отпуск): в формате ДД.ММ через запятую", "nh": "Если конец раньше начала (например, 20:00–08:00), смена переходит на следующий день. Для суток укажите 08:00–08:00.", "alm_title": "Пора вставать!", "stop": "Остановить", "today": "Сегодня", "workday": "Рабочий день", "dayoff": "Выходной день", "holoff": "{h} — выходной", "hrs": "{n} ч работы", "alarm": "Будильник {t}", "nextw": "Следующая смена: {d}", "nextday": "(след. день)", "prevday": "(накануне)", "total": "Итого {y}", "ystat": "Статистика за {y} год", "s_mwd": "{m} — рабочие дни", "s_mwh": "{m} — рабочие часы", "s_ywd": "Рабочих дней в году", "s_ywh": "Рабочих часов в году", "s_avg": "В среднем в месяц", "s_shift": "Одна смена", "u_d": "дн.", "u_h": "ч", "xday": "Выходной", "hol_ny": "Новый год", "hol_w8": "8 Марта", "hol_nav": "Навруз", "hol_mem": "День памяти", "hol_ind": "День независимости", "hol_tch": "День учителя", "hol_con": "День Конституции", "ringm": "Работа начинается в {s} и заканчивается в {e}.", "almx": "Работа {s} – {e}", "testx": "Проверка: работа {s} – {e}", "ntitle": "Сегодня рабочий день!", "m": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"], "mg": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"], "wd": ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"], "dn": ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"]}, "en": {"title": "Work schedule & alarm", "sub": "Change your schedule in Settings.", "prev": "Previous month", "next": "Next month", "lg_work": "Workday", "lg_off": "Day off", "lg_hol": "Holiday", "lg_today": "Today", "swipe": "Swipe sideways — stats, alarm and settings ›", "tab_g": "Schedule", "tab_h": "Stats", "tab_b": "Alarm", "tab_s": "Settings", "bymonth": "By month", "th_m": "Month", "th_wd": "Workdays", "th_od": "Days off", "th_wh": "Work hours", "alm_on": "Turn alarm on", "alm_off": "Turn alarm off", "test": "Test sound", "hint_web": "The alarm rings while this page is open. To have it ring with the phone locked, set it in your phone's own alarm — times for each workday are listed below.", "hint_app": "The alarm is set on the phone itself: it rings even if the app is closed or the phone is locked. Times for each workday are listed below.", "st_app": "On — your phone will ring on workdays.", "st_web": "On — keep this page open.", "next7": "Next 7 workdays", "th_date": "Date", "th_time": "Hours", "th_alm": "Alarm", "f_type": "Schedule type", "o_w5": "5/2 — Monday–Friday", "o_w6": "6/1 — Monday–Saturday", "o_c22": "2/2 — 2 days on, 2 off", "o_c33": "3/3 — 3 days on, 3 off", "o_c44": "4/4 — 4 days on, 4 off", "o_c12": "1/2 — 24h shift, 2 off", "o_c13": "1/3 — 24h shift, 3 off", "o_cus": "Custom (N/M)", "f_n": "Workdays (N)", "f_m": "Days off (M)", "f_start": "First workday of the cycle", "f_from": "Start time", "f_to": "End time", "f_brk": "Lunch break (min)", "f_pre": "Alarm: minutes before work", "f_year": "Year for stats", "f_lang": "Language", "f_theme": "Appearance (theme)", "th_auto": "Automatic — follow phone", "th_dark": "Dark", "th_light": "Light", "th_violet": "Violet (glass)", "f_hol": "Days off on Uzbekistan holidays", "f_extra": "Extra days off (e.g. Eid, vacation): DD.MM, comma-separated", "nh": "If the end is earlier than the start (e.g. 20:00–08:00), the shift runs into the next day. For a 24-hour shift enter 08:00–08:00.", "alm_title": "Time to get up!", "stop": "Stop", "today": "Today", "workday": "Workday", "dayoff": "Day off", "holoff": "{h} — day off", "hrs": "{n} h of work", "alarm": "Alarm {t}", "nextw": "Next shift: {d}", "nextday": "(next day)", "prevday": "(day before)", "total": "Total {y}", "ystat": "{y} statistics", "s_mwd": "{m} — workdays", "s_mwh": "{m} — work hours", "s_ywd": "Workdays per year", "s_ywh": "Work hours per year", "s_avg": "Average per month", "s_shift": "One shift", "u_d": "days", "u_h": "h", "xday": "Day off", "hol_ny": "New Year", "hol_w8": "Women's Day", "hol_nav": "Navruz", "hol_mem": "Remembrance Day", "hol_ind": "Independence Day", "hol_tch": "Teachers' Day", "hol_con": "Constitution Day", "ringm": "Work starts at {s} and ends at {e}.", "almx": "Work {s} – {e}", "testx": "Test: work {s} – {e}", "ntitle": "Workday today!", "m": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], "mg": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], "wd": ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"], "dn": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}};
+let lang='uz';try{lang=localStorage.getItem('ishgrafik_lang')||'uz'}catch(e){}if(!I18N[lang])lang='uz';
+const L=()=>I18N[lang];
+const t=(k,o)=>{let v=L()[k]??I18N.uz[k]??k;if(o)for(const x in o)v=v.split('{'+x+'}').join(o[x]);return v};
+const ds=d=>`${d.getDate()} ${L().mg[d.getMonth()]}, ${L().dn[d.getDay()]}`;
+const FIX={'1.1':'ny','8.3':'w8','21.3':'nav','9.5':'mem','1.9':'ind','1.10':'tch','8.12':'con'};
 const KEYS=['type','n','m','start','from','to','brk','pre','year','hol','extra'];
 const now=new Date();
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -274,7 +306,7 @@ function cfg(){
   const sp=($('start').value||iso(now)).split('-').map(Number);
   return{t,n,m,fh,fm,mins,hrs:Math.max(0,mins-brk)/60,pre:+$('pre').value||0,hol:$('hol').checked,extra,start:new Date(sp[0],sp[1]-1,sp[2])};
 }
-function holName(c,d){const k=d.getDate()+'.'+(d.getMonth()+1);if(c.extra.has(k))return'Dam kuni';if(c.hol&&FIX[k])return FIX[k];return''}
+function holName(c,d){const k=d.getDate()+'.'+(d.getMonth()+1);if(c.extra.has(k))return t('xday');if(c.hol&&FIX[k])return t('hol_'+FIX[k]);return''}
 function isWork(c,d){
   if(holName(c,d))return false;
   if(c.t==='w5'){const w=d.getDay();return w>=1&&w<=5}
@@ -283,7 +315,7 @@ function isWork(c,d){
   return ((diff%L)+L)%L<c.n;
 }
 const hm=(h,m)=>String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
-function endStr(c){const e=c.fh*60+c.fm+c.mins;return hm(Math.floor(e/60)%24,e%60)+(e>=1440?' (ertasi)':'')}
+function endStr(c){const e=c.fh*60+c.fm+c.mins;return hm(Math.floor(e/60)%24,e%60)+(e>=1440?' '+t('nextday'):'')}
 function alarmAt(c,d){const a=new Date(d.getFullYear(),d.getMonth(),d.getDate(),c.fh,c.fm);a.setMinutes(a.getMinutes()-c.pre);return a}
 const fmtH=h=>(Math.round(h*10)/10).toLocaleString('uz-UZ');
 
@@ -299,15 +331,15 @@ function render(){
   let nx=new Date(td);for(let i=0;i<400;i++){nx.setDate(nx.getDate()+1);if(isWork(c,nx))break}
   const al=alarmAt(c,td);
   $('today').className='pan today'+(w?' work':'');
-  $('today').innerHTML=`<div class="lab">${w?'<span class="live"></span>':''}Bugun, ${td.getDate()} ${OY[td.getMonth()].toLowerCase()}, ${HAFT[td.getDay()]}</div>
-   <div class="big">${w?'Ish kuni':(hn?esc(hn)+' — dam':'Dam olish kuni')}</div>
-   ${w?`<div class="hrs">${hm(c.fh,c.fm)} – ${endStr(c)}</div><div class="row"><span class="pill">${fmtH(c.hrs)} soat ish</span><span class="pill r">Budilnik ${hm(al.getHours(),al.getMinutes())}</span></div>`
-      :`<div class="row"><span class="pill">Keyingi ish: ${nx.getDate()} ${OY[nx.getMonth()].toLowerCase()}, ${HAFT[nx.getDay()]}</span><span class="pill">${hm(c.fh,c.fm)} – ${endStr(c)}</span></div>`}`;
+  $('today').innerHTML=`<div class="lab">${w?'<span class="live"></span>':''}${t('today')}, ${ds(td)}</div>
+   <div class="big">${w?t('workday'):(hn?esc(t('holoff',{h:hn})):t('dayoff'))}</div>
+   ${w?`<div class="hrs">${hm(c.fh,c.fm)} – ${endStr(c)}</div><div class="row"><span class="pill">${t('hrs',{n:fmtH(c.hrs)})}</span><span class="pill r">${t('alarm',{t:hm(al.getHours(),al.getMinutes())})}</span></div>`
+      :`<div class="row"><span class="pill">${t('nextw',{d:ds(nx)})}</span><span class="pill">${hm(c.fh,c.fm)} – ${endStr(c)}</span></div>`}`;
 
   // Taqvim
-  const y=view.getFullYear(),mo=view.getMonth();$('mname').textContent=OY[mo]+' '+y;
+  const y=view.getFullYear(),mo=view.getMonth();$('mname').textContent=L().m[mo]+' '+y;
   const first=(new Date(y,mo,1).getDay()+6)%7,dim=new Date(y,mo+1,0).getDate();
-  let h=HAF.map(x=>`<div class="dow">${x}</div>`).join('')+'<div class="d e"></div>'.repeat(first);
+  let h=L().wd.map(x=>`<div class="dow">${x}</div>`).join('')+'<div class="d e"></div>'.repeat(first);
   for(let i=1;i<=dim;i++){const d=new Date(y,mo,i),ww=isWork(c,d),hh=holName(c,d),t=+d===+td;
     h+=`<div class="d${ww?' w':''}${hh?' h':''}${t?' t':''}" title="${hh?esc(hh):''}">${i}<small>${ww?hm(c.fh,c.fm):(hh?esc(hh):'')}</small></div>`}
   $('cal').innerHTML=h;
@@ -315,19 +347,19 @@ function render(){
   // Yillik hisob
   const Y=+$('year').value||now.getFullYear();let rows='',tw=0,tdays=0,mx=0;const ms=[];
   for(let m=0;m<12;m++){const n=new Date(Y,m+1,0).getDate();let k=0;for(let i=1;i<=n;i++)if(isWork(c,new Date(Y,m,i)))k++;ms.push([k,n]);mx=Math.max(mx,k);tw+=k;tdays+=n}
-  ms.forEach(([k,n],m)=>{rows+=`<tr class="${Y===now.getFullYear()&&m===now.getMonth()?'cur':''}"><td>${OY[m]}</td><td>${k}</td><td>${n-k}</td><td>${fmtH(k*c.hrs)}</td><td class="barc" style="width:30%"><span class="bar" data-w="${mx?k/mx*100:0}%" style="width:${barsOn?(mx?k/mx*100:0):0}%"></span></td></tr>`});
+  ms.forEach(([k,n],m)=>{rows+=`<tr class="${Y===now.getFullYear()&&m===now.getMonth()?'cur':''}"><td>${L().m[m]}</td><td>${k}</td><td>${n-k}</td><td>${fmtH(k*c.hrs)}</td><td class="barc" style="width:30%"><span class="bar" data-w="${mx?k/mx*100:0}%" style="width:${barsOn?(mx?k/mx*100:0):0}%"></span></td></tr>`});
   $('tb').innerHTML=rows;
-  $('tf').innerHTML=`<tr><td>Jami ${Y}</td><td>${tw}</td><td>${tdays-tw}</td><td>${fmtH(tw*c.hrs)}</td><td class="barc"></td></tr>`;
+  $('tf').innerHTML=`<tr><td>${t('total',{y:Y})}</td><td>${tw}</td><td>${tdays-tw}</td><td>${fmtH(tw*c.hrs)}</td><td class="barc"></td></tr>`;
   const cm=Y===now.getFullYear()?now.getMonth():mo,cur=ms[cm][0];
-  $('statH').textContent=`${Y}-yil hisobi`;
+  $('statH').textContent=t('ystat',{y:Y});
   $('stats').innerHTML=[
-    [OY[cm]+' — ish kunlari',cur,'kun'],[OY[cm]+' — ish soatlari',cur*c.hrs,'soat'],
-    ['Yilda ish kunlari',tw,'kun'],['Yilda ish soatlari',tw*c.hrs,'soat'],
-    ['Oyiga o\'rtacha',tw/12,'kun'],['Bir smena',c.hrs,'soat']
+    [t('s_mwd',{m:L().m[cm]}),cur,t('u_d')],[t('s_mwh',{m:L().m[cm]}),cur*c.hrs,t('u_h')],
+    [t('s_ywd'),tw,t('u_d')],[t('s_ywh'),tw*c.hrs,t('u_h')],
+    [t('s_avg'),tw/12,t('u_d')],[t('s_shift'),c.hrs,t('u_h')]
   ].map(([a,v,u])=>`<div class="st"><span>${a}</span><b data-v="${v}">${fmtH(v)}<em>${u}</em></b></div>`).join('');
 
   // Yaqin ish kunlari
-  let up='',d=new Date(td),cnt=0;for(let i=0;i<400&&cnt<7;i++){if(isWork(c,d)){const a=alarmAt(c,d);up+=`<tr><td>${d.getDate()} ${OY[d.getMonth()].toLowerCase()}, ${HAFT[d.getDay()]}</td><td>${hm(c.fh,c.fm)} – ${endStr(c)}</td><td>${hm(a.getHours(),a.getMinutes())}${a.getDate()!==d.getDate()?' (oldingi kun)':''}</td></tr>`;cnt++}d.setDate(d.getDate()+1)}
+  let up='',d=new Date(td),cnt=0;for(let i=0;i<400&&cnt<7;i++){if(isWork(c,d)){const a=alarmAt(c,d);up+=`<tr><td>${ds(d)}</td><td>${hm(c.fh,c.fm)} – ${endStr(c)}</td><td>${hm(a.getHours(),a.getMinutes())}${a.getDate()!==d.getDate()?' '+t('prevday'):''}</td></tr>`;cnt++}d.setDate(d.getDate()+1)}
   $('up').innerHTML=up;
   syncNative();
 }
@@ -344,26 +376,26 @@ function beep(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)(
   out.connect(ac.destination);out.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(ac.destination);
   notes.forEach((f,i)=>{const t=t0+i*.22;[[f,1,1.6],[f*2,.22,.6],[f*4,.1,.22]].forEach(([fr,v,dur])=>{const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=fr;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(out);o.start(t);o.stop(t+dur+.05)})})}catch(e){}}
 function ring(text){$('almX').textContent=text;$('alarm').classList.add('on');loud=0;beep();clearInterval(beepT);beepT=setInterval(beep,3500);
-  try{if(window.Notification&&Notification.permission==='granted')new Notification('Bugun ish kuni!',{body:text})}catch(e){}
+  try{if(window.Notification&&Notification.permission==='granted')new Notification(t('ntitle'),{body:text})}catch(e){}
   try{navigator.vibrate&&navigator.vibrate([400,200,400])}catch(e){}}
 function check(){if(!armed||APP)return;const c=cfg(),n=new Date();
   for(const off of[0,1]){const d=day0(n);d.setDate(d.getDate()+off);if(!isWork(c,d))continue;const a=alarmAt(c,d),k=iso(d);
-    if(n>=a&&n-a<10*60e3&&!fired.has(k)){fired.add(k);ring(`Ish ${hm(c.fh,c.fm)} da boshlanadi, ${endStr(c)} da tugaydi.`)}}}
+    if(n>=a&&n-a<10*60e3&&!fired.has(k)){fired.add(k);ring(t('ringm',{s:hm(c.fh,c.fm),e:endStr(c)}))}}}
 // Android ilova ichida: haqiqiy budilnik telefonning o'zida qo'yiladi
 const APP=typeof window.Android==='object'&&window.Android!==null;
-if(APP)$('almHint').textContent='Budilnik telefonning o\'zida qo\'yiladi: ilova yopiq yoki telefon qulflangan bo\'lsa ham chaladi. Har bir ish kuni uchun vaqt pastda ko\'rsatilgan.';
+function hintText(){$('almHint').textContent=t(APP?'hint_app':'hint_web')}
 function syncNative(){if(!APP)return;const c=cfg(),arr=[];
-  if(armed){const d=day0(new Date());for(let i=0;i<200&&arr.length<60;i++){if(isWork(c,d)){const a=alarmAt(c,d);if(+a>Date.now())arr.push({t:+a,x:`Ish ${hm(c.fh,c.fm)} – ${endStr(c)}`})}d.setDate(d.getDate()+1)}}
+  if(armed){const d=day0(new Date());for(let i=0;i<200&&arr.length<60;i++){if(isWork(c,d)){const a=alarmAt(c,d);if(+a>Date.now())arr.push({t:+a,x:t('almx',{s:hm(c.fh,c.fm),e:endStr(c)})})}d.setDate(d.getDate()+1)}}
   try{window.Android.setAlarms(JSON.stringify(arr))}catch(e){}}
-function setArmed(v){armed=v;$('almBtn').textContent=armed?'Budilnikni o\'chirish':'Budilnikni yoqish';
-  $('almState').textContent=armed?(APP?'Yoqildi — ish kunlari telefon o\'zi chaladi.':'Yoqildi — sahifani ochiq qoldiring.'):'';
+function setArmed(v){armed=v;$('almBtn').textContent=t(armed?'alm_off':'alm_on');
+  $('almState').textContent=armed?t(APP?'st_app':'st_web'):'';
   try{localStorage.setItem('ishgrafik_alarm',armed?'1':'0')}catch(e){}
   syncNative()}
 $('almBtn').addEventListener('click',()=>{setArmed(!armed);
   if(!APP){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}
   try{if(armed&&window.Notification&&Notification.permission==='default')Notification.requestPermission().catch(()=>{})}catch(e){}
   check()}});
-$('test').addEventListener('click',()=>{const c=cfg();if(APP){try{window.Android.test(`Sinov: ish ${hm(c.fh,c.fm)} – ${endStr(c)}`);return}catch(e){}}ring(`Sinov: ish ${hm(c.fh,c.fm)} – ${endStr(c)}.`)});
+$('test').addEventListener('click',()=>{const c=cfg();if(APP){try{window.Android.test(t('testx',{s:hm(c.fh,c.fm),e:endStr(c)}));return}catch(e){}}ring(t('testx',{s:hm(c.fh,c.fm),e:endStr(c)})+'.')});
 try{if(localStorage.getItem('ishgrafik_alarm')==='1')setArmed(true)}catch(e){}
 $('stop').addEventListener('click',()=>{clearInterval(beepT);$('alarm').classList.remove('on')});
 setInterval(()=>{check();if(new Date().getDate()!==now.getDate()){now.setTime(Date.now());render()}},15000);
@@ -401,7 +433,20 @@ tabs.forEach((b,i)=>b.addEventListener('click',()=>go(i)));
 pg.addEventListener('touchstart',()=>ind.classList.remove('anim'),{passive:true});
 let st=null;pg.addEventListener('scroll',()=>{ind.style.setProperty('--p',(pg.scrollLeft/Math.max(1,pg.clientWidth)).toFixed(4));const i=Math.round(pg.scrollLeft/Math.max(1,pg.clientWidth));if(i!==cur)setTab(i);clearTimeout(st);st=setTimeout(()=>{try{history.replaceState(null,'','#'+ids[cur])}catch(e){}},200)},{passive:true});
 const pro=new ResizeObserver(()=>{pg.scrollTo({left:cur*pg.clientWidth});ind.style.setProperty('--p',cur)});pro.observe(pg);
-render();
+// Til: barcha matnlarni almashtirish
+function applyLang(l){if(I18N[l])lang=l;document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)});
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.i18nAria)));
+  pgs.forEach((p,i)=>p.setAttribute('aria-label',t(['tab_g','tab_h','tab_b','tab_s'][i])));
+  document.title=t('title');$('lang').value=lang;hintText();setArmed(armed);
+  try{window.Android&&window.Android.setLang&&window.Android.setLang(lang)}catch(e){}
+  render()}
+$('lang').addEventListener('change',e=>{try{localStorage.setItem('ishgrafik_lang',e.target.value)}catch(_){}applyLang(e.target.value)});
+document.querySelectorAll('.lpb').forEach(b=>b.addEventListener('click',()=>{try{localStorage.setItem('ishgrafik_lang',b.dataset.l)}catch(_){}applyLang(b.dataset.l);
+  const lp=$('lp');lp.classList.add('out');setTimeout(()=>{lp.hidden=true;lp.classList.remove('out')},460);if(cur>=0)play(cur,true)}));
+let firstRun=true;try{firstRun=!localStorage.getItem('ishgrafik_lang')}catch(e){}
+if(firstRun){$('lp').hidden=false;setTimeout(()=>{const b=document.querySelector('.lpb');b&&b.focus()},50)}
+applyLang(lang);
 pgs.forEach(p=>{const seen=new Set();let n=0;p.querySelectorAll('h1,.sub,.top>.pan,.swipe,.stats,h2,.scroll,.wrap>.pan,.wrap.pan').forEach(el=>{if(seen.has(el))return;seen.add(el);el.classList.add('rv');el.style.setProperty('--i',n++)})});
 const h0=ids.indexOf(location.hash.slice(1));
 requestAnimationFrame(()=>requestAnimationFrame(()=>{if(h0>0)go(h0);else{cur=-1;setTab(0,true)}}));
