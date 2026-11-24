@@ -100,6 +100,27 @@ public class MainActivity extends Activity {
             });
         }
 
+        /** Mavzuga qarab tepa va pastki tizim panellarining rangi. */
+        @JavascriptInterface
+        public void setBars(String theme) {
+            runOnUiThread(() -> {
+                boolean night = (getResources().getConfiguration().uiMode
+                        & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
+                        == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+                int top = 0xFF15803D, bottom;
+                if ("violet".equals(theme)) { top = 0xFF2A1466; bottom = 0xFF110828; }
+                else if ("dark".equals(theme) || (!"light".equals(theme) && night)) bottom = 0xFF0E1411;
+                else bottom = 0xFFFFFFFF;
+                getWindow().setStatusBarColor(top);
+                getWindow().setNavigationBarColor(bottom);
+                android.view.View d = getWindow().getDecorView();
+                int f = d.getSystemUiVisibility();
+                if (bottom == 0xFFFFFFFF) f |= android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                else f &= ~android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                d.setSystemUiVisibility(f);
+            });
+        }
+
         @JavascriptInterface
         public String nextAlarm() {
             return String.valueOf(AlarmStore.next(app));
