@@ -36,7 +36,7 @@ import java.util.Locale;
  * Bildirishnomada (qulf ekranida ham) jonli ko'rsatadi; xohlansa — boshqa ilovalar ustida qalqib turuvchi oyna.
  */
 public class StepService extends Service implements SensorEventListener {
-    static final String CH = "steps_v1";
+    static final String CH = "steps_v2";
     static final int NID = 21;
     static final String STOP = "uz.ishgrafigi.STOP_STEPS";
 
@@ -89,8 +89,15 @@ public class StepService extends Service implements SensorEventListener {
     public void onCreate() {
         super.onCreate();
         NotificationManager nm = getSystemService(NotificationManager.class);
+        if (nm != null) {
+            // Eski "ovozsiz" kanal qulf ekranida yashirinardi — o'chirib, oddiy (ovozsiz) kanal ochamiz
+            try { nm.deleteNotificationChannel("steps_v1"); } catch (Exception ignored) {}
+        }
         if (nm != null && nm.getNotificationChannel(CH) == null) {
-            NotificationChannel ch = new NotificationChannel(CH, Lang.stepsChannel(this), NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel ch = new NotificationChannel(CH, Lang.stepsChannel(this), NotificationManager.IMPORTANCE_DEFAULT);
+            ch.setSound(null, null);
+            ch.enableVibration(false);
+            ch.enableLights(false);
             ch.setShowBadge(false);
             ch.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             nm.createNotificationChannel(ch);
