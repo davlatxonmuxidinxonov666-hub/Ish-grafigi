@@ -11,6 +11,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -18,6 +22,56 @@ import android.webkit.WebViewClient;
 
 public class MainActivity extends Activity {
     private WebView web;
+    private SensorManager sensors;
+    private boolean stepsOn = false;
+    private long lastPush = 0;
+
+    /** Ilova ochiq paytda qadamlarni jonli yangilab, sahifaga yuboradi. */
+    private final SensorEventListener stepListener = new SensorEventListener() {
+        @Override public void onSensorChanged(SensorEvent e) {
+            Steps.update(MainActivity.this, e.values[0]);
+            long now = System.currentTimeMillis();
+            if (now - lastPush > 1500) { lastPush = now; pushSteps(); }
+        }
+        @Override public void onAccuracyChanged(Sensor s, int a) {}
+    };
+
+    private void pushSteps() {
+        if (web == null) return;
+        final String js = "window.onSteps&&window.onSteps(" + Steps.json(this) + ")";
+        runOnUiThread(() -> web.evaluateJavascript(js, null));
+    }
+
+    private void startSteps() {
+        Sensor s = Steps.sensor(this);
+        if (s == null || !Steps.allowed(this) || stepsOn) return;
+        if (sensors == null) sensors = (SensorManager) getSystemService(SENSOR_SERVICE);
+        if (sensors != null) {
+            sensors.registerListener(stepListener, s, SensorManager.SENSOR_DELAY_UI);
+            stepsOn = true;
+        }
+    }
+
+    private void stopSteps() {
+        if (sensors != null && stepsOn) sensors.unregisterListener(stepListener);
+        stepsOn = false;
+    }
+
+    @Override
+    protected void onPause() {
+        stopSteps();
+        super.onPause();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
+        super.onRequestPermissionsResult(requestCode, permissions, results);
+        if (requestCode == 11) {
+            Steps.schedule(this);
+            startSteps();
+            pushSteps();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle b) {
@@ -44,6 +98,7 @@ public class MainActivity extends Activity {
             requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 10);
         }
         AlarmStore.scheduleNext(this);
+        Steps.schedule(this);
     }
 
     @Override
@@ -56,6 +111,8 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         AlarmStore.scheduleNext(this);
+        startSteps();
+        pushSteps();
     }
 
     /** Budilnik ishonchli chalishi uchun kerakli ruxsatlarni bir marta so'raydi. */
@@ -97,6 +154,24 @@ public class MainActivity extends Activity {
                 Intent i = new Intent(MainActivity.this, AlarmActivity.class);
                 i.putExtra("text", text);
                 startActivity(i);
+            });
+        }
+
+        @JavascriptInterface
+        public String getSteps() {
+            return Steps.json(app);
+        }
+
+        @JavascriptInterface
+        public void askSteps() {
+            runOnUiThread(() -> {
+                if (Build.VERSION.SDK_INT >= 29 && !Steps.allowed(MainActivity.this)) {
+                    requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 11);
+                } else {
+                    Steps.schedule(MainActivity.this);
+                    startSteps();
+                    pushSteps();
+                }
             });
         }
 
