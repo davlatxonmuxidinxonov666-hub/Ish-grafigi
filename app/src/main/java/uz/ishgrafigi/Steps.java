@@ -47,6 +47,37 @@ final class Steps {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
     }
 
+    private static String dateOf(long wallMs) {
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date(wallMs));
+    }
+
+    /** Bugun filtr olib tashlagan qadamlar. */
+    private static int noiseToday(SharedPreferences sp) {
+        return today().equals(sp.getString("nday", "")) ? sp.getInt("noise", 0) : 0;
+    }
+
+    /** Yurish emas deb topilgan qadamlarni (qisqa tasodifiy qimirlash) hisobdan chiqarish. */
+    static synchronized void addNoise(Context c, int n, long wallMs) {
+        if (n <= 0) return;
+        SharedPreferences sp = p(c);
+        String d = dateOf(wallMs);
+        if (d.equals(sp.getString("day", ""))) {
+            int cur = d.equals(sp.getString("nday", "")) ? sp.getInt("noise", 0) : 0;
+            sp.edit().putString("nday", d).putInt("noise", cur + n).apply();
+        } else {
+            JSONObject h = hist(sp);
+            int v = h.optInt(d, -1);
+            if (v >= 0) {
+                try { h.put(d, Math.max(0, v - n)); } catch (Exception ignored) {}
+                sp.edit().putString("hist", h.toString()).apply();
+            }
+        }
+    }
+
+    static float lastRaw(Context c) {
+        return p(c).getFloat("last", -1f);
+    }
+
     private static JSONObject hist(SharedPreferences sp) {
         try { return new JSONObject(sp.getString("hist", "{}")); } catch (Exception e) { return new JSONObject(); }
     }
@@ -63,7 +94,8 @@ final class Steps {
             base = v;
             last = v;
         } else if (!d.equals(day)) {
-            try { h.put(day, Math.max(0, Math.round(last - base))); } catch (Exception ignored) {}
+            int nz = day.equals(sp.getString("nday", "")) ? sp.getInt("noise", 0) : 0;
+            try { h.put(day, Math.max(0, Math.round(last - base) - nz)); } catch (Exception ignored) {}
             base = v >= last ? last : 0f;   // telefon qayta yoqilgan bo'lsa hisoblagich 0 dan boshlanadi
         } else if (v < last) {
             base = v - (last - base);       // kun ichida qayta yoqilgan: bugungi hisobni davom ettirish
@@ -77,22 +109,21 @@ final class Steps {
             Collections.sort(keys);
             for (int i = 0; i < keys.size() - 60; i++) h.remove(keys.get(i));
         }
-        sp.edit().putString("day", d).putFloat("base", base).putFloat("last", last).putString("hist", h.toString()).apply();
-        return Math.max(0, Math.round(last - base));
+        SharedPreferences.Editor ed = sp.edit().putString("day", d).putFloat("base", base).putFloat("last", last).putString("hist", h.toString());
+        if (!d.equals(sp.getString("nday", ""))) ed.putString("nday", d).putInt("noise", 0);
+        ed.apply();
+        return Math.max(0, Math.round(last - base) - (d.equals(sp.getString("nday", "")) ? sp.getInt("noise", 0) : 0));
     }
 
     static int todayCount(Context c) {
         SharedPreferences sp = p(c);
         if (!today().equals(sp.getString("day", ""))) return 0;
-        return Math.max(0, Math.round(sp.getFloat("last", 0f) - sp.getFloat("base", 0f)));
+        return Math.max(0, Math.round(sp.getFloat("last", 0f) - sp.getFloat("base", 0f)) - noiseToday(sp));
     }
 
     static String json(Context c) {
         SharedPreferences sp = p(c);
-        int todaySteps = 0;
-        if (today().equals(sp.getString("day", ""))) {
-            todaySteps = Math.max(0, Math.round(sp.getFloat("last", 0f) - sp.getFloat("base", 0f)));
-        }
+        int todaySteps = todayCount(c);
         try {
             JSONObject o = new JSONObject();
             o.put("today", todaySteps);

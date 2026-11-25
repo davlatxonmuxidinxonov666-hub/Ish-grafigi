@@ -37,7 +37,7 @@ jobs:
       - name: Yuklab olish sahifasiga joylash (Releases)
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v2.3.${{ github.run_number }}
+          tag_name: v2.4.${{ github.run_number }}
           name: Ish grafigi ${{ github.run_number }}
           body: Telefonga yuklab oling va o'rnating (IshGrafigi.apk).
           files: IshGrafigi.apk

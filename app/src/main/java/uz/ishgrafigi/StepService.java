@@ -44,6 +44,24 @@ public class StepService extends Service implements SensorEventListener {
     private long lastNotify = 0;
     private WindowManager wm;
     private TextView bubble;
+
+    // Filtr: kamida MIN_RUN qadam ketma-ket, orasi MAX_GAP dan oshmasa — yurish deb hisoblanadi
+    private static final int MIN_RUN = 10;
+    private static final long MAX_GAP = 2_500_000_000L; // 2,5 soniya (nanosekund)
+    private final android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private long lastTs = 0;
+    private int run = 0;
+    private boolean confirmed = false;
+    private float runStartRaw = -1f;
+    private final Runnable finalizer = () -> {
+        if (lastTs != 0 && SystemClock.elapsedRealtimeNanos() - lastTs > MAX_GAP) {
+            finishRun();
+            lastTs = 0;
+            refresh(Steps.todayCount(this));
+        } else if (lastTs != 0) {
+            scheduleFinish();
+        }
+    };
     private WindowManager.LayoutParams blp;
 
     static SharedPreferences prefs(Context c) {
@@ -88,6 +106,38 @@ public class StepService extends Service implements SensorEventListener {
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         Sensor s = Steps.sensor(this);
         if (sm != null && s != null) sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+        Sensor det = sm == null ? null : sm.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        if (det != null) sm.registerListener(this, det, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private long wall(long ts) {
+        return System.currentTimeMillis() - (SystemClock.elapsedRealtimeNanos() - ts) / 1_000_000L;
+    }
+
+    private void scheduleFinish() {
+        handler.removeCallbacks(finalizer);
+        handler.postDelayed(finalizer, 3000);
+    }
+
+    /** Qisqa (MIN_RUN dan kam) qadamlar seriyasi yurish emas: hisoblagich qo'shgan bo'lsa — ayiramiz. */
+    private void finishRun() {
+        if (run > 0 && !confirmed && runStartRaw >= 0) {
+            float now = Steps.lastRaw(this);
+            int counted = Math.max(0, Math.round(now - runStartRaw));
+            Steps.addNoise(this, Math.min(run, counted), wall(lastTs));
+        }
+        run = 0;
+        confirmed = false;
+        runStartRaw = -1f;
+    }
+
+    private void onStep(long ts) {
+        if (lastTs != 0 && ts - lastTs > MAX_GAP) finishRun();
+        if (run == 0) runStartRaw = Steps.lastRaw(this);
+        lastTs = ts;
+        run++;
+        if (run >= MIN_RUN) confirmed = true;
+        scheduleFinish();
     }
 
     @Override
@@ -104,6 +154,10 @@ public class StepService extends Service implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent e) {
+        if (e.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            onStep(e.timestamp);
+            return;
+        }
         int n = Steps.update(this, e.values[0]);
         if (bubble != null) bubble.setText(fmt(n));
         long now = SystemClock.elapsedRealtime();
@@ -223,6 +277,7 @@ public class StepService extends Service implements SensorEventListener {
 
     @Override
     public void onDestroy() {
+        handler.removeCallbacks(finalizer);
         if (sm != null) sm.unregisterListener(this);
         removeBubble();
         super.onDestroy();
