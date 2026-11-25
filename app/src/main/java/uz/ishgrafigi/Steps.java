@@ -81,6 +81,12 @@ final class Steps {
         return Math.max(0, Math.round(last - base));
     }
 
+    static int todayCount(Context c) {
+        SharedPreferences sp = p(c);
+        if (!today().equals(sp.getString("day", ""))) return 0;
+        return Math.max(0, Math.round(sp.getFloat("last", 0f) - sp.getFloat("base", 0f)));
+    }
+
     static String json(Context c) {
         SharedPreferences sp = p(c);
         int todaySteps = 0;
@@ -93,6 +99,7 @@ final class Steps {
             o.put("hist", hist(sp));
             o.put("sensor", sensor(c) != null);
             o.put("allowed", allowed(c));
+            o.put("overlay", android.provider.Settings.canDrawOverlays(c));
             return o.toString();
         } catch (Exception e) {
             return "{\"today\":0,\"hist\":{},\"sensor\":false,\"allowed\":false}";

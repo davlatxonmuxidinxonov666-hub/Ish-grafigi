@@ -10,5 +10,6 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context c, Intent intent) {
         AlarmStore.scheduleNext(c);
         Steps.schedule(c);
+        StepService.sync(c);
     }
 }

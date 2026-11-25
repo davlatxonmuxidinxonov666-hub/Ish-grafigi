@@ -68,6 +68,7 @@ public class MainActivity extends Activity {
         super.onRequestPermissionsResult(requestCode, permissions, results);
         if (requestCode == 11) {
             Steps.schedule(this);
+            StepService.sync(this);
             startSteps();
             pushSteps();
         }
@@ -112,6 +113,7 @@ public class MainActivity extends Activity {
         super.onResume();
         AlarmStore.scheduleNext(this);
         startSteps();
+        StepService.sync(this);
         pushSteps();
     }
 
@@ -160,6 +162,27 @@ public class MainActivity extends Activity {
         @JavascriptInterface
         public String getSteps() {
             return Steps.json(app);
+        }
+
+        /** Sahifadagi sozlamalar: doimiy bildirishnoma, qalqib turuvchi oyna, kunlik maqsad. */
+        @JavascriptInterface
+        public void setStepOpts(String json) {
+            try {
+                org.json.JSONObject o = new org.json.JSONObject(json);
+                android.content.SharedPreferences sp = StepService.prefs(app);
+                boolean bubble = o.optBoolean("bubble", false), was = sp.getBoolean("bubble", false);
+                sp.edit().putBoolean("fg", o.optBoolean("fg", true)).putBoolean("bubble", bubble)
+                        .putInt("goal", o.optInt("goal", 10000)).apply();
+                if (bubble && !was && !Settings.canDrawOverlays(app)) {
+                    runOnUiThread(() -> {
+                        try {
+                            startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:" + getPackageName())));
+                        } catch (Exception ignored) {}
+                    });
+                }
+                StepService.sync(app);
+            } catch (Exception ignored) {}
         }
 
         @JavascriptInterface
